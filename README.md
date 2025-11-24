@@ -4,21 +4,79 @@
 
 This guide provides step-by-step instructions for testing and deploying the updated MitraStar N1 Home Assistant custom component. The component now uses a dedicated `parsers.py` module with unit tests to ensure robust HTML parsing across multiple modem page variants.
 
+## Agradecimentos / Credit
+
+Este projeto foi idealizado a partir da ideia apresentada no repositório abaixo. A implementação deste repositório é independente e foi desenvolvida especificamente para o modelo de modem **GPT-2741GNAC-N1**; na maior parte não reutilizei código do projeto original, que foi usado apenas como inspiração técnica.
+
+- Referência de inspiração: https://github.com/joseska/MitraStar_GPT-2541GNAC_HA
+
+Texto curto sugerido (pode aparecer no topo do `README`):
+
+> Este projeto foi inspirado por https://github.com/joseska/MitraStar_GPT-2541GNAC_HA. Obrigado ao autor pela ideia inicial — esta implementação é independente e direcionada ao modelo GPT-2741GNAC-N1.
+
+Short credit (English):
+
+> Inspired by https://github.com/joseska/MitraStar_GPT-2541GNAC_HA. Many thanks to the original author for the idea — this repository is an independent implementation tailored for the GPT-2741GNAC-N1 modem.
+
 ## File Structure
 
 ```
-custom_components/mitrastar_n1/
-├── __init__.py              # Main coordinator (delegates to parsers.py)
-├── sensor.py                # Sensor entities
-├── binary_sensor.py         # Binary sensor entities
-├── config_flow.py           # Configuration UI
-├── const.py                 # Constants
-├── manifest.json            # Component metadata
-├── parsers.py               # ✨ NEW: Robust HTML parsing module
-├── tests/
-│   └── test_parsers.py      # ✨ NEW: Unit tests for parsers
-└── http_cgi-bin_*.htm       # Sample HTML files (for testing)
+mitrastar_n1/                    # repository root
+├── .github/ (optional CI or workflows)
+├── ACKNOWLEDGEMENTS.md
+├── custom_components/
+│   └── mitrastar_n1/
+│       ├── __init__.py
+│       ├── binary_sensor.py
+│       ├── config_flow.py
+│       ├── const.py
+│       ├── http_cgi-bin_*.htm
+│       ├── manifest.json
+│       ├── parsers.py
+│       ├── sensor.py
+│       └── tests/
+│           └── test_parsers.py
+├── hacs.json
+├── LICENSE
+└── README.md
 ```
+
+Obs: mantenha os arquivos do componente dentro de `custom_components/mitrastar_n1/` quando publicar no GitHub para que HACS e o Home Assistant consigam localizar a integração.
+
+## Instalação via HACS (passos concisos)
+
+Pré-requisitos rápidos:
+- Repositório público no GitHub contendo `custom_components/mitrastar_n1/` no root.
+- `manifest.json` presente em `custom_components/mitrastar_n1/` com o campo `version` correto.
+- Uma Release/Tag criada no GitHub correspondente à versão do `manifest.json` (ex.: `v1.0.0` ou `1.0.0`).
+
+Opção A — Adicionar repositório customizado via HACS (UI):
+1. Abra o Home Assistant → HACS → Integrations.
+2. Clique nos três pontos (⋯) no canto superior direito → `Custom repositories`.
+3. Cole a URL do seu repositório GitHub (ex.: `https://github.com/mandrado/mitrastar_n1`) e selecione a categoria `Integration`.
+4. Clique em `Add`.
+5. Aguarde o HACS processar; depois procure `mitrastar_n1` em HACS → Integrations e clique em `Install`.
+6. Após instalar, reinicie o Home Assistant (Configurações → Sistema → Reiniciar) para ativar a integração.
+
+Opção B — Instalação manual (sem HACS):
+1. Copie a pasta `custom_components/mitrastar_n1/` para a pasta `custom_components/` da sua configuração do Home Assistant.
+2. Reinicie o Home Assistant.
+
+Comandos git úteis para preparar a publicação (local):
+```powershell
+cd 'C:\Users\mandr\source\repos-hacs\mitrastar_n1'
+git add .
+git commit -m "chore: prepare repo for HACS (manifest, LICENSE, README)"
+git push origin main
+# criar tag que corresponda ao "version" em manifest.json
+git tag v1.0.0
+git push origin --tags
+```
+
+Notas rápidas:
+- Se o HACS não mostrar a integração imediatamente, clique em HACS → Integrations → three dots → `Reload` ou espere alguns minutos para o cache atualizar.
+- Verifique logs do Home Assistant se a integração não aparecer ou falhar ao carregar.
+
 
 ## Prerequisites
 
