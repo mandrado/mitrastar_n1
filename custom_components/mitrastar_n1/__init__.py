@@ -6,11 +6,28 @@ import re
 import requests
 import hashlib
 import socket
-from homeassistant.core import HomeAssistant
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_HOST, CONF_USERNAME, CONF_PASSWORD
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from homeassistant.exceptions import ConfigEntryNotReady, ConfigEntryAuthFailed
+
+# Home Assistant imports: guard so tests can run without Home Assistant installed
+try:
+    from homeassistant.core import HomeAssistant
+    from homeassistant.config_entries import ConfigEntry
+    from homeassistant.const import CONF_HOST, CONF_USERNAME, CONF_PASSWORD
+    from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+    from homeassistant.exceptions import ConfigEntryNotReady, ConfigEntryAuthFailed
+    _HAS_HA = True
+except Exception:  # pragma: no cover - fallback for test environments
+    # Define lightweight fallbacks so module can be imported in CI/local tests
+    HomeAssistant = object
+    ConfigEntry = object
+    CONF_HOST = "host"
+    CONF_USERNAME = "username"
+    CONF_PASSWORD = "password"
+    DataUpdateCoordinator = object
+    UpdateFailed = Exception
+    ConfigEntryNotReady = Exception
+    ConfigEntryAuthFailed = Exception
+    _HAS_HA = False
+
 from .const import DOMAIN
 from . import parsers
 
