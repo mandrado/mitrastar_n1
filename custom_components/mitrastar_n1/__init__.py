@@ -248,21 +248,16 @@ class MitraStarCoordinator(DataUpdateCoordinator):
             _LOGGER.debug("Buscando settings-local-network.cgi...")
             local_network_html = await self._fetch_url_with_session("/cgi-bin/settings-local-network.cgi")
             
-            _LOGGER.debug("Buscando sophia_info.cgi...")
-            sophia_info_html = await self._fetch_url_with_session("/cgi-bin/sophia_info.cgi")
-            
             # 3. Parsing dos dados
             device_info = self._parse_device_info(about_html)
-            connectivity_info = self._parse_connectivity_info(sophia_info_html)
             parsed_devices = self._parse_device_table(device_list_html)
             modem_mac = self._parse_with_regex(local_network_html, r"Endereço MAC:.*?([0-9a-fA-F:]{17})", str)
             wifi_data = self._parse_wifi_24ghz(wifi_settings_html)
             wifi_5g_data = self._parse_wifi_5ghz(wifi_5g_html) if wifi_5g_html else None
 
-            # Consolida os dados
+            # Consolida os dados (sem conectividade por enquanto)
             return {
                 "device_info": device_info,
-                "connectivity_info": connectivity_info,
                 "devices": parsed_devices,
                 "modem_mac": modem_mac.upper() if modem_mac else None,
                 "wifi_24ghz": wifi_data,
@@ -299,29 +294,6 @@ class MitraStarCoordinator(DataUpdateCoordinator):
             "mac_lan": get_val("MLG_LAN_MAC_Address"),
         }
 
-    def _parse_connectivity_info(self, html):
-        """Extrai informações de conectividade PON e Internet."""
-        if not html: return {}
-
-        # Regex genérica para tabela chave/valor
-        def get_val(label):
-            # CORREÇÃO AQUI: Usando rf"..." (Raw F-String) para evitar SyntaxWarning
-            regex = rf"{label}.*?</td>\s*<td[^>]*>(.*?)</td>"
-            val = self._parse_with_regex(html, regex, str, re.DOTALL)
-            return val.strip() if val else None
-
-        return {
-            "pon_link": get_val("Link:"),
-            "pon_rx": get_val("Potência Rx:"),
-            "pon_tx": get_val("Potência Tx:"),
-            "ppp_status": get_val("PPP:"),
-            "ppp_session": get_val("Sessão PPP"),
-            "ipv4_local": get_val("Endereço de IPv4 local:"),
-            "ipv4_publico": get_val("Endereço de IPv4 público:"),
-            "gateway": get_val("Gateway Padrao:"),
-            "dns_primario": get_val("DNS Primário:"),
-            "dns_secundario": get_val("DNS Secundário:"),
-        }
 
     def _parse_wifi_24ghz(self, html):
         """Delegate parsing of 2.4GHz WiFi to parsers.py."""

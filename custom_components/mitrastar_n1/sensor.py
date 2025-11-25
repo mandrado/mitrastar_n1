@@ -1,5 +1,5 @@
 # /config/custom_components/mitrastar_n1/sensor.py
-
+import logging
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -7,6 +7,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
+_LOGGER = logging.getLogger(__name__)
 # No runtime monkey-patch imports here; parsing is implemented in __init__.py
 
 async def async_setup_entry(
@@ -20,10 +21,10 @@ async def async_setup_entry(
         MitraStarDeviceInfo(coordinator),
         MitraStarWifi(coordinator),   # 2.4GHz
         MitraStarWifi5G(coordinator), # 5GHz
-        MitraStarConnectivity(coordinator), # PON/Internet
     ]
 
     async_add_entities(sensors)
+    _LOGGER.debug("Sensores registrados: %s", [s._attr_name for s in sensors])
 
 class MitraStarDeviceInfo(CoordinatorEntity, SensorEntity):
     def __init__(self, coordinator):
@@ -119,32 +120,6 @@ class MitraStarWifi5G(CoordinatorEntity, SensorEntity):
                 data["_note"] = "5GHz data not present; using 2.4GHz fallback"
         return data or {}
 
-
-class MitraStarConnectivity(CoordinatorEntity, SensorEntity):
-    """Sensor para informações de conectividade PON e Internet."""
-    
-    def __init__(self, coordinator):
-        super().__init__(coordinator)
-        self._attr_name = "MitraStar Conectividade"
-        self._attr_unique_id = f"{coordinator.host}_connectivity"
-        self._attr_icon = "mdi:wan"
-
-    @property
-    def device_info(self):
-        """Vincula este sensor ao dispositivo modem."""
-        modem_mac = self.coordinator.data.get("modem_mac")
-        if not modem_mac:
-            return None
-        return {"identifiers": {(DOMAIN, modem_mac)}}
-
-    @property
-    def state(self):
-        """Estado principal: status do link PON."""
-        data = self.coordinator.data.get("connectivity_info", {})
-        pon_link = data.get("pon_link")
-        if pon_link:
-            return pon_link
-        return "Desconhecido"
 
     @property
     def extra_state_attributes(self):
