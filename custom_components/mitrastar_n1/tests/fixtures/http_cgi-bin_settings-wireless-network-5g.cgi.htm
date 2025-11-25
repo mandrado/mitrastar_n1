@@ -1,0 +1,2703 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="robots" content="noindex">
+	<title>GVT</title>
+
+	<link rel="stylesheet" type="text/css" href="/html/assets/_css/gateway_sophia.css <view-source:http://192.168.1.1/html/assets/_css/gateway_sophia.css>"/>
+	<link rel="stylesheet" type="text/css" href="/html/assets/_js/fancybox/jquery.fancybox.css <view-source:http://192.168.1.1/html/assets/_js/fancybox/jquery.fancybox.css>" />
+
+	<script type="text/javascript" src="/html/assets/_js/jquery-1.5.min.js <view-source:http://192.168.1.1/html/assets/_js/jquery-1.5.min.js>"></script>
+	<script type="text/javascript" src="/html/assets/_js/fancybox/jquery.fancybox.pack.js <view-source:http://192.168.1.1/html/assets/_js/fancybox/jquery.fancybox.pack.js>"></script>
+	<script type="text/javascript" src="/html/assets/_js/jquery.cookie.js <view-source:http://192.168.1.1/html/assets/_js/jquery.cookie.js>"></script>
+    <script type="text/javascript" src="/html/assets/_js/jquery.qrcode.min.js <view-source:http://192.168.1.1/html/assets/_js/jquery.qrcode.min.js>"></script>
+    <script type="text/javascript" src="/html/assets/_language/Multi_Language_sophia.js <view-source:http://192.168.1.1/html/assets/_language/Multi_Language_sophia.js>"></script>
+	</head>
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+		var wireless5GTabIndex = "1";
+		var inValid = "0";
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+		$(document).ready(function (){
+			doWireless5GResetCheck();
+			doWirelessbandSelectionChange();
+			doWirelessChannelSelectionChange();
+			
+			$('#mac_filter_table_list_tbody').load('/cgi-bin/mac_address_list_5G.cgi');
+			$('#mac_filter_table_selectindex').load('/cgi-bin/sophia_wifi5g_SelectIndex.cgi');	
+			$('#accordion a.item').click(function (){
+				$('#accordion li').children('ul').slideUp('fast');	
+				$("#accordion a").removeClass("active");
+				$(this).addClass("active");
+				$(this).siblings('ul').slideDown('fast');	
+				return false;
+			});
+			
+			$(".tab").slideUp();
+			$("#tab-0"+wireless5GTabIndex).slideDown();
+			$("#tabtitle-"+wireless5GTabIndex).addClass("active");
+			
+			$("#menu-wireless  li a").click(function(){
+				var i = $(this).attr("rel");
+				$("#menu-wireless  li a").removeClass("active");
+				$(this).addClass("active");
+				$(".tab").slideUp();
+				$("#tab-"+i).slideDown();
+				return false;
+			});
+			
+			//UpdateWMM();
+			generate5GQRCode();
+			doPasswordHide();
+		
+			if(checkMACAuth())
+			{
+				document.form_wifi_basic.input_wps[1].checked = true;
+				document.form_wifi_basic.input_wps[1].disabled = true;
+				document.form_wifi_basic.input_wps[0].disabled = true;			
+			}
+			
+			
+			$('#MLG_GVTSettings_5G_Basic_Cancel').click(function () {
+				window.location.reload();
+			}); 
+			$('#MLG_GVTSettings_5G_Advanced_Cancel').click(function () {
+				window.location.reload();
+			}); 
+			$('#MLG_GVTSettings_5G_Basic_Save').click(function () {
+				do5GBasicSave();
+			});
+			$('#MLG_GVTSettings_5G_Advanced_Save').click(function () {
+				do5GAdvancedSave();
+			});
+			$('#MLG_GVTSettings_5G_Advanced_Table_Add').click(function () {
+				doAddMacAddress();
+			});
+			
+		});
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+		function checkMACAuth()
+		{
+			var WLANMAC;
+
+			return false;
+		}
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+		function do5GBasicSave()
+		{
+			with (document.form_wifi_basic)
+			{
+				var data = {
+					type:"basic",
+					ConfigState:"ModifyandWPS",
+					WlEnbl:0,
+					HideSSID:0,
+					SSID:SSID.value,
+					PreSharedKey:wlPasswd.value,
+					BeaconType:0,
+					WpaAuthMode:securityMode_5G.value,
+					EnabledWPS:0,
+					WscConfigState:0,
+					TriggerType:0,
+					StationPin:0
+				}
+				
+				if(WifiState[0].checked)	//5G enable
+					data.WlEnbl = 1;
+				else	//5G disable
+					data.WlEnbl = 0;
+
+				if(HideSSID[0].checked)	//show SSID
+				{
+					data.HideSSID = 0;
+				}
+				else	//hide SSID
+				{
+					if(input_WPS[0].checked)
+					{
+						alert(document.getElementById("MLG_WLAN5G_WPS_Enable_Error2").innerHTML);
+						input_WPS[1].checked = 1;
+						//return;
+					}
+					data.HideSSID = 1;
+				}
+				
+
+				var dspace_num = (SSID.value.match(/  /g) || [] ).length;
+				var is_first_space = (SSID.value.match(/^ /g) || [] ).length;
+				var is_last_space = (SSID.value.match(/ $/g) || [] ).length;
+				if(is_first_space || is_last_space){
+					//alert("Invalid SSID Input!. First and last character cannot be space, please try again!!");
+					document.getElementById("MLG_GVTSettings_5G_Error_SSID_Space_Char").style.display = "";
+					return true;
+				}
+				if( dspace_num > 0)
+				{
+					//alert("Invalid SSID Input!, Please remove 'Double Space Character' and try again.");
+					document.getElementById("MLG_GVTSettings_5G_Error_SSID_Space_Char").style.display = "";
+					return true;
+				}
+
+				
+				if (hasSpecialCharacter(SSID.value)) //Check SSID
+				{
+					//alert("has special character");
+
+
+					//var language_Index = get_language_index($.cookie("CurrentLang"));
+					//document.getElementById("MLG_GVTSettings_5G_Error_SSID_Special_Char").innerHTML = MLG_GVTSettings_5G_Error_SSID_Special_Char[language_Index] + hasSpecialCharacter(SSID.value);
+
+
+				
+					document.getElementById("MLG_GVTSettings_5G_Error_SSID_Special_Char").style.display = "";	
+					return ;
+				}
+				
+				if(SSID.value.length == 0)
+				{
+					document.getElementById("MLG_GVTSettings_5G_Error_SSID_empty").style.display = "";
+					return ;
+				}
+				if(SSID.value.length > 32)
+				{
+					document.getElementById("MLG_GVTSettings_5G_Error_SSID_long").style.display = "";
+					return ;
+				}
+				if((data.WpaAuthMode == "psk2") || (data.WpaAuthMode == "pskpsk2") || (data.WpaAuthMode == "psk"))
+				{
+					if(data.PreSharedKey != "****"){
+						if (wpapskCheck())
+						{
+							return false;
+						}
+					}
+				}
+				if(data.WpaAuthMode == "open")
+					data.BeaconType = "Basic";
+				else if(data.WpaAuthMode == "psk2")
+					data.BeaconType = "11i";
+				else if(data.WpaAuthMode == "pskpsk2")
+					data.BeaconType = "WPAand11i";
+				//else if(data.WpaAuthMode == "psk")
+					//data.BeaconType = "WPA";
+				if(input_WPS[0].checked)
+				{
+					data.EnabledWPS = 1;
+					data.WscConfigState = 2;
+					data.TriggerType = "none";
+					data.StationPin = "";
+				}
+				else
+				{
+					data.EnabledWPS = 0;
+					data.WscConfigState = 0;
+				}
+			
+				var url = document.form_wifi_basic.action;
+				var callback;
+				callback = function(responseData, textStatus) {
+					$('.loading').fadeOut(200);
+					$('.loading-icon').fadeOut(400);
+					parent.frames["menufrm"].MenuMaskclose();
+					window.location.href="/cgi-bin/settings-wireless-network-5g.cgi";
+				};
+				$('.loading').fadeIn(200);
+				$('.loading-icon').fadeIn(400);
+				parent.frames["menufrm"].MenuMaskopen();
+				$.post(url, data, callback, "html");
+			}
+
+		}
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+		function generate5GQRCode()
+		{
+			var ssid_5g = "SEU_SSID_WIFI";
+			// var hidden_5g ="False";
+			var org_enc_5g = "psk2";	
+			if(org_enc_5g=="psk2")
+			{
+				var enc_5g = "WPA";
+				var key_5g = "SUA_SENHA_WIFI";
+			}
+			else if((org_enc_5g=="pskpsk2"))
+			{
+				var enc_5g = "WPA";
+				var key_5g = "SUA_SENHA_WIFI";
+			}
+			else if((org_enc_5g=="psk"))
+			{
+				var enc_5g = "WPA";
+				var key_5g = "SUA_SENHA_WIFI";
+			}
+			else{
+				var enc_5g="nopass";
+				var key_5g="";
+			}
+			var qrstring_5g = 'WIFI:S:'+ssid_5g+';T:'+enc_5g+';P:'+key_5g+';';
+			// if (hidden_5g) {
+			// 	qrstring_5g += 'H:true';
+			// }
+			qrstring_5g += ';';
+			$('#qrcode_5g').empty();
+			$('#qrcode_5g').qrcode(qrstring_5g);
+		}
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		function hasSpecialCharacter(value)
+		{
+
+			for (i = 0; i < value.length; i++)
+			{
+				var c = value.charAt(i);
+				if(
+					c == '"' ||
+					c == '\''||
+					c == '¨'
+				)
+				return true;
+
+				if(value.charCodeAt(i) < 32 || (value.charCodeAt(i) > 126 && value.charCodeAt(i) != 160))
+			  		return true;
+			}
+			
+			var invalid_string = value.match(/[^\x20\x21\x23-\x26\x28-\x7e]/g);
+			if( (invalid_string || []).length > 0)
+			{
+				return invalid_string;
+			}
+
+
+	
+			return false;
+		}
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+
+		function clearErrMsg()
+		{
+			document.getElementById("MLG_GVTSettings_5G_Error_SSID_Special_Char").style.display = "none";
+			document.getElementById("MLG_GVTSettings_5G_Error_SSID_empty").style.display = "none";
+			document.getElementById("MLG_GVTSettings_5G_Error_SSID_long").style.display = "none";
+			document.getElementById("MLG_GVTSettings_5G_Passw_Error1").style.display = "none";
+			document.getElementById("MLG_GVTSettings_5G_Passw_space_start").style.display = "none";
+			document.getElementById("MLG_GVTSettings_5G_Passw_space_end").style.display = "none";
+
+			document.getElementById("MLG_GVTSettings_5G_Passw_space").style.display = "none";
+			document.getElementById("MLG_GVTSettings_5G_Error_Special_Char").style.display = "none";
+			document.getElementById("MLG_GVTSettings_5G_Error_SSID_Space_Char").style.display = "none";
+
+			document.getElementById("MLG_GVTSettings_5G_Error_Mac").style.display = "none";
+			document.getElementById("MLG_GVTSettings_5G_Error_EmptyMAC").style.display = "none";
+			document.getElementById("MLG_GVTSettings_5G_Error_DuplicateMAC").style.display = "none";
+		}
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+		function wpapskCheck()
+		{
+			var keyvalue=document.form_wifi_basic.wlPasswd.value;
+			var wpapsklen=keyvalue.length;
+			
+			if(wpapsklen < 8)
+			{
+				document.getElementById("MLG_GVTSettings_5G_Passw_Error1").style.display = "";
+				return true;
+			}
+			else if(wpapsklen==64)
+			{
+				for(i=0;i<64;i++)
+				{
+					var c=keyvalue.charAt(i);
+					if(doHexCheck(c)<0){
+						document.getElementById("MLG_GVTSettings_5G_Passw_Error1").style.display = "";
+						return true;
+					}
+				}
+			}
+			else if(wpapsklen > 64)
+			{
+				document.getElementById("MLG_GVTSettings_5G_Passw_Error1").style.display = "";
+				return true;
+			}
+			else
+			{
+				if(invalidASCIIrange(keyvalue) || invalidSpaceUse(keyvalue))
+					return true;
+			}
+			
+			return false;
+		}
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		function doHexCheck(c)
+		{
+			if ((c >= "0")&&(c <= "9"))
+			{
+				return 1;
+			}
+			else if ((c >= "A")&&(c <= "F"))
+			{
+				return 1;
+			}
+			else if ((c >= "a")&&(c <= "f"))
+			{
+				return 1;
+			}
+
+			return -1;
+		}
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		function invalidASCIIrange(value)
+		{
+
+			if(value.charCodeAt(i) < 32 || value.charCodeAt(i) > 126)
+			{
+				document.getElementById("MLG_GVTSettings_5G_Error_Special_Char").style.display = "";
+	  			return true;
+			}
+			
+			var invalid_string = value.match(/[^\x20\x21\x23-\x26\x28-\x7e]/g);
+			if( (invalid_string || []).length > 0)
+			{
+				//var language_Index = get_language_index($.cookie("CurrentLang"));
+				//document.getElementById("MLG_GVTSettings_5G_Error_Special_Char").innerHTML = WLAN_KEY_Error_3[language_Index] + invalid_string;
+				document.getElementById("MLG_GVTSettings_5G_Error_Special_Char").style.display = "";
+				return true;
+			}
+
+
+
+			return false;
+		}
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+		function invalidSpaceUse(value)
+		{
+
+			var space_num = (value.match(/ /g) || [] ).length;
+			if( space_num > 0)
+			{
+				document.getElementById("MLG_GVTSettings_5G_Passw_space").style.display = "";
+				return true;
+			}
+
+
+
+			return false;
+		}
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+		function doPasswordHide()
+		{
+			with (document.form_wifi_basic)
+			{
+				if(securityMode_5G.value == "open")
+					$('#tr_password').hide();
+				else
+					$('#tr_password').show();
+			}
+		}
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		function doWireless5GResetCheck()
+		{
+
+			var ConfigState;
+			ConfigState = "Done";
+			if(ConfigState != "Done"){
+				$('.loading').fadeIn(200);
+				$('.loading-icon').fadeIn(400);
+				parent.frames["menufrm"].MenuMaskopen(); 
+				setTimeout(function(){ 
+					 $('.loading').fadeOut(200);
+					 $('.loading-icon').fadeOut(400);
+					 parent.frames["menufrm"].MenuMaskclose();
+					 window.location.reload(); 
+				}, 10000);	
+			}
+
+		}
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		function do5GAdvancedSave()
+		{
+			with (document.form_wifi_advanced)
+			{
+				var data = {
+					type:"advanced",
+					Advanced_set:1,
+					Wirelessband:select2.value,
+					Channel:select_Channel_5G.value,
+					Bandwidth:select_Bandwidth_5G.value,
+					WlDisableWmm:0,
+					
+				}
+			
+				if(input_WMM[0].checked)
+					data.WlDisableWmm = 0;
+				else
+					data.WlDisableWmm = 1;
+				
+				if(select2.value=="802_11n/ac")
+					data.Wirelessband = "802_11ac";
+		
+	
+			}
+			var url = document.form_wifi_advanced.action;
+			var callback;
+			callback = function(responseData, textStatus) {
+				setTimeout(function(){ 
+					$('.loading').fadeOut(200);
+					$('.loading-icon').fadeOut(400);
+					parent.frames["menufrm"].MenuMaskclose();
+					window.location.reload();
+				}, 20000);
+			};
+			$('.loading').fadeIn(200);
+			$('.loading-icon').fadeIn(400);
+			parent.frames["menufrm"].MenuMaskopen();
+			$.post(url, data, callback, "html");
+		}
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+		function doWirelessbandSelectionChange() 
+		{
+			with (document.form_wifi_advanced)
+			{
+				if(select2.value == "802_11ac")
+				{
+					$('#Bandwidth_5G_value80').show();
+					select_Bandwidth_5G.value = "80";
+				}
+				else if(select2.value == "802_11n")	
+				{
+					if(select_Bandwidth_5G.value == "80")
+						select_Bandwidth_5G.value = "40";
+					$('#Bandwidth_5G_value80').hide();
+				}else if(select2.value == "802_11n/ac")
+				{
+					$('#Bandwidth_5G_value80').show();
+				}
+			}
+		}
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+		function doWirelessChannelSelectionChange() 
+		{
+			with (document.form_wifi_advanced)
+			{
+				if(select_Bandwidth_5G.value == "20" || select_Bandwidth_5G.value == "2040auto")
+				{
+					$('#Channel_5G_value165').show();
+				}
+				else if(select_Bandwidth_5G.value == "40")	
+				{
+					$('#Channel_5G_value165').hide();
+					
+					if( select_Channel_5G.value == "165" )
+					{
+						select_Channel_5G.value = 0;
+					}
+					
+				}
+				else if(select_Bandwidth_5G.value == "80")	
+				{
+					$('#Channel_5G_value165').hide();
+					
+					if(select_Channel_5G.value == "165" )
+					{
+						select_Channel_5G.value = 0;
+					}
+					
+				}
+			}
+		}
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		function ChecknoDuplicateMAC(value, index)
+		{
+			var MACAddress = new Array(
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				""
+			)
+			
+			for(i = 0; i < 32; i++)
+			{
+				if(MACAddress[i] == value && i!= index)
+					return 1;
+			}
+		}
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+		function doAddMacAddress()
+		{
+			with (document.form_wifi_advanced)
+			{
+				if(doMACcheck(MAC_chosen) < 0)
+					return;
+					
+				var MAC_Addr = MAC_chosen.value.toUpperCase();
+				if(ChecknoDuplicateMAC(MAC_Addr, edit_num.value))
+				{
+					document.getElementById("MLG_GVTSettings_5G_Error_DuplicateMAC").style.display = "";
+					return;
+				}
+				
+				if(edit_num.value == "null")
+				{
+					if(MACAddress0.value == "" || MACAddress0.value == "N/A")
+						NodeName.value = "WlFltMacAddr0";
+					else if(MACAddress1.value == "" || MACAddress1.value == "N/A")
+						NodeName.value = "WlFltMacAddr1";
+					else if(MACAddress2.value == "" || MACAddress2.value == "N/A")
+						NodeName.value = "WlFltMacAddr2";
+					else if(MACAddress3.value == "" || MACAddress3.value == "N/A")
+						NodeName.value = "WlFltMacAddr3";
+					else if(MACAddress4.value == "" || MACAddress4.value == "N/A")
+						NodeName.value = "WlFltMacAddr4";
+					else if(MACAddress5.value == "" || MACAddress5.value == "N/A")
+						NodeName.value = "WlFltMacAddr5";
+					else if(MACAddress6.value == "" || MACAddress6.value == "N/A")
+						NodeName.value = "WlFltMacAddr6";
+					else if(MACAddress7.value == "" || MACAddress7.value == "N/A")
+						NodeName.value = "WlFltMacAddr7";
+					else if(MACAddress8.value == "" || MACAddress8.value == "N/A")
+						NodeName.value = "WlFltMacAddr8";
+					else if(MACAddress9.value == "" || MACAddress9.value == "N/A")
+						NodeName.value = "WlFltMacAddr9";
+					else if(MACAddress10.value == "" || MACAddress10.value == "N/A")
+						NodeName.value = "WlFltMacAddr10";
+					else if(MACAddress11.value == "" || MACAddress11.value == "N/A")
+						NodeName.value = "WlFltMacAddr11";
+					else if(MACAddress12.value == "" || MACAddress12.value == "N/A")
+						NodeName.value = "WlFltMacAddr12";
+					else if(MACAddress13.value == "" || MACAddress13.value == "N/A")
+						NodeName.value = "WlFltMacAddr13";
+					else if(MACAddress14.value == "" || MACAddress14.value == "N/A")
+						NodeName.value = "WlFltMacAddr14";
+					else if(MACAddress15.value == "" || MACAddress15.value == "N/A")
+						NodeName.value = "WlFltMacAddr15";
+					else if(MACAddress16.value == "" || MACAddress16.value == "N/A")
+						NodeName.value = "WlFltMacAddr16";
+					else if(MACAddress17.value == "" || MACAddress17.value == "N/A")
+						NodeName.value = "WlFltMacAddr17";
+					else if(MACAddress18.value == "" || MACAddress18.value == "N/A")
+						NodeName.value = "WlFltMacAddr18";
+					else if(MACAddress19.value == "" || MACAddress19.value == "N/A")
+						NodeName.value = "WlFltMacAddr19";
+					else if(MACAddress20.value == "" || MACAddress20.value == "N/A")
+						NodeName.value = "WlFltMacAddr20";
+					else if(MACAddress21.value == "" || MACAddress21.value == "N/A")
+						NodeName.value = "WlFltMacAddr21";
+					else if(MACAddress22.value == "" || MACAddress22.value == "N/A")
+						NodeName.value = "WlFltMacAddr22";
+					else if(MACAddress23.value == "" || MACAddress23.value == "N/A")
+						NodeName.value = "WlFltMacAddr23";
+					else if(MACAddress24.value == "" || MACAddress24.value == "N/A")
+						NodeName.value = "WlFltMacAddr24";
+					else if(MACAddress25.value == "" || MACAddress25.value == "N/A")
+						NodeName.value = "WlFltMacAddr25";
+					else if(MACAddress26.value == "" || MACAddress26.value == "N/A")
+						NodeName.value = "WlFltMacAddr26";
+					else if(MACAddress27.value == "" || MACAddress27.value == "N/A")
+						NodeName.value = "WlFltMacAddr27";
+					else if(MACAddress28.value == "" || MACAddress28.value == "N/A")
+						NodeName.value = "WlFltMacAddr28";
+					else if(MACAddress29.value == "" || MACAddress29.value == "N/A")
+						NodeName.value = "WlFltMacAddr29";
+					else if(MACAddress30.value == "" || MACAddress30.value == "N/A")
+						NodeName.value = "WlFltMacAddr30";
+					else if(MACAddress31.value == "" || MACAddress31.value == "N/A")
+						NodeName.value = "WlFltMacAddr31";
+
+					if(NodeName.value == "WlFltMacAddr32")
+					{
+						//alert("Too Many MAC Filter!");
+						alert(document.getElementById("MLG_GVTSettings_WL_Advanced_Error_Over_Max_Mac_Num").innerHTML);
+						return;
+					}	
+				}
+
+				var data = {
+					type:"advanced",
+					MacFilter_Flag:1, //0:no action; 1:Add; 2:Delete;
+					WlFltMacMode:"allow",
+					NodeName:NodeName.value,
+					MACAddr:MAC_Addr
+				}
+			}
+			
+			var url = document.form_wifi_advanced.action;
+			var callback;
+			callback = function(responseData, textStatus) {
+				$('.loading').fadeOut(200);
+				$('.loading-icon').fadeOut(400);
+				parent.frames["menufrm"].MenuMaskclose();
+				window.location.reload();	
+			};
+			$('.loading').fadeIn(200);
+			$('.loading-icon').fadeIn(400);
+			parent.frames["menufrm"].MenuMaskopen();
+			$.post(url, data, callback, "html");
+		}
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		function doMACcheck(object)
+		{
+			var szAddr = object.value;
+			var len = szAddr.length;
+
+			if ( len == 0 )
+			{
+				document.getElementById("MLG_GVTSettings_5G_Error_EmptyMAC").style.display = "";
+				return -1;
+			}
+
+			if ( len == 12 )
+			{
+				var newAddr = "";
+				var i = 0;
+
+				for ( i = 0; i < len; i++ )
+				{
+					var c = szAddr.charAt(i);
+				  
+					if ( doHexCheck(c) < 0 )
+					{
+						document.getElementById("MLG_GVTSettings_5G_Error_Mac").style.display = "";
+						return -1;
+					}
+					if ( (i == 2) || (i == 4) || (i == 6) || (i == 8) || (i == 10) )
+						newAddr = newAddr + ":";
+					newAddr = newAddr + c;
+				}
+				document.getElementById("MAC_chosen").value = newAddr;
+				return 0;
+			}
+			else if ( len == 17 )
+			{
+				var i = 2;
+				var c0 = szAddr.charAt(0);
+				var c1 = szAddr.charAt(1);
+
+				if ( (doHexCheck(c0) < 0) || (doHexCheck(c1) < 0) )
+				{
+					document.getElementById("MLG_GVTSettings_5G_Error_Mac").style.display = "";
+					return -1;
+				}
+			
+				i = 2;
+				while ( i < len )
+				{
+					var c0 = szAddr.charAt(i);
+					var c1 = szAddr.charAt(i+1);
+					var c2 = szAddr.charAt(i+2);  
+					if ( (c0 != ":") || (doHexCheck(c1) < 0) || (doHexCheck(c2) < 0) )
+					{
+						document.getElementById("MLG_GVTSettings_5G_Error_Mac").style.display = "";
+						return -1;
+					}
+					i = i + 3;
+				}
+				return 0; 
+			}
+			else
+			{
+				document.getElementById("MLG_GVTSettings_5G_Error_Mac").style.display = "";
+				return -1;
+			}
+		}
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		function editClick(index)
+		{
+			with (document.form_wifi_advanced)
+			{
+				switch(index)
+				{
+					case 0:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr0";
+						break;
+					case 1:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr1";
+						break;
+					case 2:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr2";
+						break;
+					case 3:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr3";
+						break;
+					case 4:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr4";
+						break;
+					case 5:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr5";
+						break;
+					case 6:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr6";
+						break;
+					case 7:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr7";
+						break;
+					case 8:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr8";
+						break;
+					case 9:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr9";
+						break;
+					case 10:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr10";
+						break;
+					case 11:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr11";
+						break;
+					case 12:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr12";
+						break;
+					case 13:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr13";
+						break;
+					case 14:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr14";
+						break;
+					case 15:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr15";
+						break;
+					case 16:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr16";
+						break;
+					case 17:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr17";
+						break;
+					case 18:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr18";
+						break;
+					case 19:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr19";
+						break;
+					case 20:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr20";
+						break;
+					case 21:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr21";
+						break;
+					case 22:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr22";
+						break;
+					case 23:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr23";
+						break;
+					case 24:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr24";
+						break;
+					case 25:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr25";
+						break;
+					case 26:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr26";
+						break;
+					case 27:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr27";
+						break;
+					case 28:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr28";
+						break;
+					case 29:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr29";
+						break;
+					case 30:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr30";
+						break;
+					case 31:
+						MAC_chosen.value = ""
+						NodeName.value = "WlFltMacAddr31";
+						break;
+				}
+				edit_num.value = index;
+			}
+		}
+
+		
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+		function delClick(num)
+		{
+			var empty = "";
+			with (document.form_wifi_advanced)
+			{
+				var data  = {
+					type:"advanced",
+					delnum: num,
+					MacFilter_Flag:2, //0:no action; 1:Add; 2:Delete;
+					empty:empty
+				}
+			}
+			var url = document.form_wifi_advanced.action;
+			var callback;
+			callback = function(responseData, textStatus) {
+				$('.loading').fadeOut(200);
+				$('.loading-icon').fadeOut(400);
+				parent.frames["menufrm"].MenuMaskclose();
+				window.location.reload();	
+			};
+			$('.loading').fadeIn(200);
+			$('.loading-icon').fadeIn(400);
+			parent.frames["menufrm"].MenuMaskopen();
+			$.post(url, data, callback, "html");
+		}
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		function updateWlanClient(IndexValue)
+		{
+			var hostData;
+			//document.form_wifi2.editMAC.value = ""; //add new MAC
+			if(IndexValue != "")
+			{
+				document.getElementById( "MAC_chosen" ).disabled = true;
+				hostData=IndexValue.split(" "); 
+				//document.form_wifi_advanced.Host_chosen.value=hostData[0];
+				document.form_wifi_advanced.MAC_chosen.value = hostData[1];
+			} 
+			else
+			{
+				document.getElementById("MAC_chosen").disabled = false;
+				document.form_wifi_advanced.MAC_chosen.value = ""; //add new MAC
+			}
+		} 
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+	</script>	
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+		
+		
+		
+
+
+
+		
+
+		
+
+
+
+
+		
+		
+
+		
+
+
+
+
+
+		
+
+
+
+		
+
+		
+
+
+
+
+
+		
+
+
+
+<body>
+	<div style="display:none" id="newkey"></div>
+	<div id="content">
+		<div class="wrap">
+			<div id="conteudo-gateway">
+				<h3 class="text-up">
+					<span id='MLG_GVTMenu_Settings_5GWLAN'>Wi-Fi 5 Ghz</span>
+				</h3>
+				
+				<div class="clear"></div>
+				<div id="menu-wireless">
+					<ul>
+						<li><a href="# <view-source:http://192.168.1.1/cgi-bin/settings-wireless-network-5g.cgi#>" rel="01" id = "tabtitle-1"><span id='MLG_GVTSettings_5G_Basic_Basic'>B&aacute;sico</span></a></li>
+						<li><a href="# <view-source:http://192.168.1.1/cgi-bin/settings-wireless-network-5g.cgi#>" rel="02" id = "tabtitle-2"><span id='MLG_GVTSettings_5G_Basic_Advanced'>Avan&ccedil;ado</span></a></li>
+					</ul>
+				</div><!--menu-wireless-->
+				
+				<div id="tab-01" class="tab">
+					<form action="/cgi-bin/settings-wireless-network-5g.cgi <view-source:http://192.168.1.1/cgi-bin/settings-wireless-network-5g.cgi>" class="form-configuracoes" name="form_wifi_basic" autocomplete="off">
+						<input type="HIDDEN" name="sessionKey" id="sessionKey" value=""> 
+						<span style="display:none" id='MLG_WLAN5G_WPS_Enable_Error2'>Se desabilitar o  An&uacute;ncio de SSID, o servi&ccedil;o WPS ser&aacute; desabilitado automaticamente.</span>
+						<table class="setupWifiTable">
+							<thead>
+								<th colspan="3"><span id='MLG_GVTSettings_5G_Basic_Settings'>Configura&ccedil;&otilde;es B&aacute;sicas</span></th>
+							</thead>
+							<tr>
+								<td width="245"><span id='MLG_GVTSettings_5G_Basic_Private'>Rede Wi-Fi Privada:</span></td>
+								<td>
+									<input type="radio" name="WifiState" value="1"  /> <li id='MLG_GVTSettings_5G_Basic_Enabled'>Habilitado</li> 
+									<input type="radio" name="WifiState" value="0" checked /> <li id='MLG_GVTSettings_5G_Basic_Disabled'>Desabilitado</li>
+								</td>
+								<td rowspan="6" width="92"><div id="qrcode_5g"></div></td>
+							</tr>
+							<tr>
+								<td><span id='MLG_GVTSettings_5G_Basic_Broadcast'>An&uacute;ncio de SSID:</span></td>
+								<td>
+									<input type="radio" name="HideSSID" checked /> <li id='MLG_GVTSettings_5G_Basic_Broadcast_Enabled'>Habilitado</li> 
+									<input type="radio" name="HideSSID"  /> <li id='MLG_GVTSettings_5G_Basic_Broadcast_Disabled'>Desabilitado</li>
+								</td>
+							</tr>
+							<tr>
+								<td><span id='MLG_GVTSettings_5G_Basic_Ssid'>SSID:</span></td>
+								<td><input name="SSID" type="text" class="input-text" id="SSID"  maxlength="32" value="SEU_SSID_WIFI" onclick="clearErrMsg();"/>
+									<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Error_SSID_long'>SSID n&atilde;o pode ser maior que 32 caracteres.</span>
+									<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Error_SSID_empty'>SSID n&atilde;o pode estar branco.</span>
+									<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Error_SSID_Special_Char'>N&atilde;o deve incluir caractere em branco ou seguintes caracteres: </span>
+									<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Error_SSID_Space_Char'>O primeiro e o &uacute;ltimo caractere n&atilde;o devem ser caracteres de espa&ccedil;o e tamb&eacute;m n&atilde;o podem conter espa&ccedil;o duplo.</span>
+								</td>									
+							</tr>
+							<tr id = "tr_password">
+								<td><span id='MLG_GVTSettings_5G_Basic_Password'>Senha:</span></td>
+								<td><input name="wlPasswd" type="password" autocomplete="new-password" class="input-text" id="wlPasswd" maxlength="64" value="SUA_SENHA_WIFI" onclick="clearErrMsg();"/>
+									<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Passw_Error1'>A chave pr&eacute;-compartilhada deve ter entre 8 a 63 caracteres ou 64 n&uacute;meros hexadecimais!</span>
+									<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Passw_space_start'>Por favor, n&atilde;o insira espa&ccedil;os em branco ao in&iacute;cio da chave pr&eacute;-compartilhada.</span>
+									<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Passw_space_end'>Por favor, n&atilde;o insira espa&ccedil;os em branco ao final da chave pr&eacute;-compartilhada.</span>
+
+									<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Passw_space'>N&atilde;o deve incluir caractere em branco</span>
+									<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Error_Special_Char'>N&atilde;o deve incluir seguintes caracteres: </span>
+						
+								</td>
+							</tr>
+							<tr>
+								<td><span id='MLG_GVTSettings_5G_Basic_Smode'>Modo de Seguran&ccedil;a:</span></td>
+								<td>
+									<select name="securityMode_5G" id="securityMode_5G" onChange="doPasswordHide();">
+										<option value="psk2" selected>WPA2</option>
+										<!-- <option value="psk" ##WLanExt_Entry_WpaAuthMode_psk##>WPA</option> -->
+										<!-- <option value="">WEP</option> -->
+										<option value="open" >Nenhum (N&atilde;o Recomendado)</option>
+									</select>
+								</td>
+							</tr>
+							<tr id="tr_wps">
+								<td>WPS:</td>
+								<td>
+									<input type="radio" name="input_wps" id="input_WPS" value="1" checked /> <li id='MLG_GVTSettings_5G_Basic_WPS_Enabled'>Habilitado</li> 
+									<input type="radio" name="input_wps" id="input_WPS" value="0"  /> <li id='MLG_GVTSettings_5G_Basic_WPS_Disabled'>Desabilitado</li> 
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" class="text-right">
+									<a href="# <view-source:http://192.168.1.1/cgi-bin/settings-wireless-network-5g.cgi#>" class="btn-default-orange-small right"><span id="MLG_GVTSettings_5G_Basic_Cancel">Cancelar</span></a>
+									<a href="# <view-source:http://192.168.1.1/cgi-bin/settings-wireless-network-5g.cgi#>" class="btn-default-orange-small right"><span id="MLG_GVTSettings_5G_Basic_Save">Salvar</span></a>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				<div id="tab-02" class="tab">
+					<form action="/cgi-bin/settings-wireless-network-5g.cgi <view-source:http://192.168.1.1/cgi-bin/settings-wireless-network-5g.cgi>" class="form-configuracoes" name="form_wifi_advanced" autocomplete="off">
+						<input type="HIDDEN" name="sessionKey" id="sessionKey" value=""> 
+						<input type="HIDDEN" name="Advanced_set" id="Advanced_set" value="0"> 
+						<input type="HIDDEN" name="MacFilter_Flag" id="MacFilter_Flag" value="0"> 
+						<input type="HIDDEN" name="edit_num" id="edit_num" value="null"> 
+						<input type="HIDDEN" name="NodeName" id="NodeName" value="WlFltMacAddr32"> 
+						<INPUT TYPE="HIDDEN" NAME="MACAddress0"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress1"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress2"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress3"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress4"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress5"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress6"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress7"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress8"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress9"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress10"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress11"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress12"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress13"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress14"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress15"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress16"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress17"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress18"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress19"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress20"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress21"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress22"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress23"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress24"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress25"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress26"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress27"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress28"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress29"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress30"  value="">
+						<INPUT TYPE="HIDDEN" NAME="MACAddress31"  value="">
+						
+						<span style="display:none" id='MLG_WLAN5G_WPS_Enable_Error3'>Hide SSID estiver ativada, desative Esconder SSID em primeiro lugar.</span>
+						<span style="display:none" id='MLG_GVTSettings_WL_Advanced_Error_Over_Max_Mac_Num'>Too Many Filtro MAC !</span>
+						
+						<table class="setupWifiTable">
+							<thead>
+								<th colspan="2"><span id='MLG_GVTSettings_5G_Advanced_Settings'>Configura&ccedil;&otilde;es Avan&ccedil;adas</span></th>
+							</thead>
+							<tr>
+								<td width="250"><span id='MLG_GVTSettings_5G_Advanced_Opmode'>Modo de Opera&ccedil;&atilde;o:</span></td>
+								<td>
+									<select name="select2" id="select2" onChange="doWirelessbandSelectionChange();">
+										<option value="802_11n/ac" selected >802.11n/ac</option>
+										<!--<option value="802_11ac" ##WLanExt_Common_Wirelessband_802_11ac## >802.11ac</option> -->
+										<!-- <option value="">802.11n+ac</option> -->
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span id='MLG_GVTSettings_5G_Advanced_Channel'>Canal:</span></td>
+								<td>
+									<select name="select_Channel_5G" id="select_Channel_5G">
+										<option value="0" selected>Autom&aacute;tico</option>
+										<option value="36" >36</option>
+										<option value="40" >40</option>
+										<option value="44" >44</option>
+										<option value="48" >48</option>
+										<option value="52" >52</option>
+										<option value="56" >56</option>
+										<option value="60" >60</option>
+										<option value="64" >64</option>
+										<option value="100" >100</option>
+										<option value="104" >104</option>
+										<option value="108" >108</option>
+										<option value="112" >112</option>
+										<option value="116" >116</option>
+									    <option value="120" >120</option> -->
+									    <option value="124" >124</option> -->
+										<option value="128" >128</option> -->
+										<!-- <option id="Channel_5G_value132" value="132" ##WLanExt_Common_Channel_132##>132</option>-->
+										<!-- <option id="Channel_5G_value136" value="136" ##WLanExt_Common_Channel_136##>136</option>-->
+										<!-- <option id="Channel_5G_value140" value="140" ##WLanExt_Common_Channel_140##>140</option>-->
+										<!-- <option value="144">144</option> -->
+										<option value="149" >149</option>
+										<option value="153" >153</option>
+										<option value="157" >157</option>
+										<option value="161" >161</option>
+										<option id="Channel_5G_value165" value="165" >165</option>
+										<!-- <option value="169">169</option> -->
+									</select>
+									<span id='MLG_GVTSettings_5G_Advanced_Channel_Tutorial_Text'>A sele&ccedil;&atilde;o manual de um canal DFS pode estar sujeito a troca de canal por motivos de Regulamenta&ccedil;&atilde;o</span>
+								</td>
+							</tr>
+							<tr>
+								<td><span id='MLG_GVTSettings_5G_Advanced_Bandwidth'>Largura de Banda do Canal:</span></td>
+								<td>
+									<select name="select_Bandwidth_5G" id="select_Bandwidth_5G" onChange="doWirelessChannelSelectionChange();">
+										<option value="2040auto"  >Autom&aacute;tico</option>
+										<option value="20" >20 MHz</option>
+										<option value="40" >40 MHz</option>
+										<option id="Bandwidth_5G_value80" value="80" selected>80 MHz</option>
+										<!-- <option value="" ##WLanExt_Common_Bandwidth_160##>160 MHz</option> -->
+									</select>
+								</td>
+							</tr>
+							<!-- 
+							<tr>
+								<td>
+									<span id='MLG_GVTSettings_5G_Advanced_TxPower'></span>
+								</td>
+								<td>
+									<select name="" id="">
+										<option value="">100%</option>
+										<option value="">90%</option>
+										<option value="">80%</option>
+										<option value="">70%</option>
+										<option value="">60%</option>
+										<option value="">50%</option>
+										<option value="">40%</option>
+										<option value="">30%</option>
+										<option value="">20%</option>
+										<option value="">10%</option>
+										<option value="">0</option>
+									</select>
+								</td>
+							</tr>
+							-->
+							<tr>
+								<td>WMM:</td>
+								<td>
+									<input type="radio" name="input_WMM" id="input_WMM" checked /> <li id='MLG_GVTSettings_5G_Advanced_Wmm_Enabled'>Habilitado</li>
+									<input type="radio" name="input_WMM" id="input_WMM"  /> <li id='MLG_GVTSettings_5G_Advanced_Wmm_Disabled'>Desabilitado</li> 
+								</td>
+							</tr>
+							<!-- 
+							<tr id="tr_wmm_power_save"  style="display: none;">
+								<td><span id='MLG_GVTSettings_5G_Advanced_Apsd'></span></td>
+								<td>
+									<input type="radio" name="" id="input" /> <li id='MLG_GVTSettings_5G_Advanced_Apsd_Enabled'>Habilitado</li> 
+									<input type="radio" name="" id="input" /> <li id='MLG_GVTSettings_5G_Advanced_Apsd_Disabled'>Desabilitado</li> 
+								</td>
+							</tr>
+							-->
+							<tr>
+								<td><span id='MLG_GVTSettings_5G_Advanced_MacAddress'>Endere&ccedil;o MAC:</span></td>
+								<td>AA:BB:CC:DD:14:14</td>
+							</tr>
+							<tr>
+								<td><span id='MLG_GVTSettings_5G_Advanced_FrBand'>Banda de Frequ&ecirc;ncia:</span></td>
+								<td>5 GHz</td>
+							</tr>
+
+							<tr>
+								<td colspan="2" class="text-right">
+									<a href="# <view-source:http://192.168.1.1/cgi-bin/settings-wireless-network-5g.cgi#>" class="btn-default-orange-small right"><span id="MLG_GVTSettings_5G_Advanced_Cancel">Cancelar</span></a>
+									<a href="# <view-source:http://192.168.1.1/cgi-bin/settings-wireless-network-5g.cgi#>" class="btn-default-orange-small right"><span id="MLG_GVTSettings_5G_Advanced_Save">Salvar</span></a>
+								</td>
+							</tr>
+						</table>
+					
+						<table class="setupWifiTable" style="display: none;" id="mac_filter_table_add_device">
+							<thead>
+								<tr>
+									<th colspan="2"><span id='MLG_GVTSettings_5G_Advanced_SubTitle_MacFlt'>Filtro de MAC</span></th>
+								</tr>
+								<tr>
+									<th><span id='MLG_GVTSettings_5G_Advanced_Table_Hostname'>Hostname</span></th>
+									<th><span id='MLG_GVTSettings_5G_Advanced_SubTitle_MacAddress'>Endere&ccedil;o MAC</span></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td id="mac_filter_table_selectindex"></td>
+									<td style="text-align:center;"><input name="MAC_chosen" type="text" class="input-text" id="MAC_chosen" maxlength="17" onclick="clearErrMsg();"/>
+										<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Error_Mac' >Por favor, informe um endere&ccedil;o MAC v&aacute;lido.</span>
+										<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Error_EmptyMAC'>Voc&ecirc; deve escolher um endere&ccedil;o MAC !</span>
+										<span style="display:none" class="vmsg error" id='MLG_GVTSettings_5G_Error_DuplicateMAC'>Duplicar Endere&ccedil;os do Mac !</span>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+									<a href="# <view-source:http://192.168.1.1/cgi-bin/settings-wireless-network-5g.cgi#>" class="btn-default-orange-small right"><span id='MLG_GVTSettings_5G_Advanced_Table_Add'>Adicionar</span></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<table class="setupWifiTable" style="display: none;" id="mac_filter_table_list_device">
+							<thead>
+								<tr>
+									<th colspan="3"><span id='MLG_WLAN5G_Authorized'>DISPOSITIVOS AUTORIZADOS</span></th>
+								</tr>
+								<tr>
+									<th><span id='MLG_WLAN5G_Hostname'>Hostname</span></th>
+									<th><span id='MLG_WLAN5G_MAC_Address'>Endere&ccedil;o MAC</span></th>
+									<th><span id='MLG_WLAN5G_Modify_Remove'>Modificar / Remover</span></th>
+								</tr>
+							</thead>
+							<tbody id = "mac_filter_table_list_tbody">
+							</tbody>					
+						</table>
+					</form>
+				</div>
+			</div><!--conteudo-->
+			
+			<div class="clear"></div>
+					
+		</div><!--wrap-->
+			
+		<div class="clear"></div>
+			
+	</div><!--content-->
+		
+	<div class="loading">
+	</div>
+	<div class="loading-icon">
+	</div>
+</body>
+
+
+

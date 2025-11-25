@@ -1,0 +1,1758 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noindex">
+<title>VIVO</title>
+
+<link rel="stylesheet" type="text/css" href="/html/assets/_css/gateway_sophia.css"/>
+<link rel="stylesheet" type="text/css" href="/html/assets/_js/fancybox/jquery.fancybox.css" />
+
+<script type="text/javascript" src="/html/assets/_js/jquery-1.6.3.min.js"></script>	
+<script type="text/javascript" src="/html/assets/_js/jquery-1.5.min.js"></script>
+<script type="text/javascript" src="/html/assets/_js/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript" src="/html/assets/_js/jquery.cookie.js"></script>
+
+</head>
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+<body>
+
+<script>
+
+$(document).ready(function(){
+
+	$('#accordion a.item').click(function () {
+		$('#accordion li').children('ul').slideUp('fast');	
+		$("#accordion a").removeClass("active");
+		$(this).addClass("active");
+		$(this).siblings('ul').slideDown('fast');	
+		return false;
+	});
+	
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+	$('#HotSpot').hide();
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+	$("table#status tr:odd").hide();
+	$("table#status tr:even td.status-link a").bind('click', function(event){
+		event.preventDefault();
+		
+		var $this = $(this);
+
+		var $tr = $(this).closest("tr").next();
+
+		if($tr.css("display") == "none")
+		{
+			$tr.show();				
+			$this.html("Ocultar");
+		} 
+		else 
+		{
+			$tr.hide();
+			$this.html("Detalhes");
+		}
+		
+		return false;
+	});
+
+	$(".tab").slideUp();
+		$("#tabip-01").slideDown();
+		$("#menu-ip-mode li:first a").addClass("active");
+		
+		$("#menu-ip-mode  li a").click(function(){
+			var i = $(this).attr("rel");
+			$("#menu-ip-mode  li a").removeClass("active");
+			$(this).addClass("active");
+			$(".tab").slideUp();
+			$("#tabip-"+i).slideDown();
+			return false;
+		});
+});
+</script>
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+	<!--div id="content"-->
+
+	<div class="wrap">
+
+		<div id="conteudo-gateway">
+			
+				<table id="status">
+				<tr>
+					<th>
+						<img src="/html/assets/_images/gateway_sophia/icon-fiber2.png" alt="GPON" style="margin: 7px 10px 0px 20px;"/>
+						<span>GPON</span>
+					</th>
+					<td>
+						<div class="status-line-2 green" style="width: 65px;">
+							<strong>Link:</strong><br />								
+							Estabelecido
+						</div>
+						<div class="status-line-2 green" style="width: 80px;">
+							<strong>Pot&ecirc;ncia Rx:</strong><br />								
+							-22.37 dBm
+							</div>
+						<div class="status-line-2 green" style="width: 80px;">
+							<strong>Pot&ecirc;ncia Tx:</strong><br />								
+							2.77 dBm 
+						</div>
+					</td>
+					<td class="status-link">
+					</td>
+				</tr>
+				<tr></tr>
+
+				
+				<tr>					
+					<th>
+						<img src="/html/assets/_images/gateway_sophia/icon-internet.png" alt="Internet" />
+						<span>Internet</span>
+					</th>
+					<td>
+						<div class="status-line-2 green">
+							<strong>PPP:</strong><br />
+							<span>Conectado</span>
+						</div>
+					</td>
+					<td class="status-link">
+						<a href="#"><span>Detalhes</span></a>
+					</td>
+				</tr>
+				<tr>
+					<td class="text-title">
+						<div id="tabela_esquerda">
+				        <ul>
+						<li class="li_par"><span>Sess&atilde;o PPP</span></li>
+						<li class="li_impar">1:17: 8:33</li>
+						</ul>
+						</div>
+					</td>
+					<td class="values" colspan="2">
+							<div id="menu-ip-mode">
+								<ul>
+								<li><a href="#" rel="01">IPv4</a></li>
+								<li><a href="#" rel="02">IPv6</a></li>
+								</ul>
+							</div>
+							<strong><span>Detalhes da Conex&atilde;o</span></strong>
+								<div id="tabip-01" class="tab">
+									<div id="tabela_esquerda">
+										<ul>
+										<li><span>Endere&ccedil;o de IPv4 local:</span></li>
+										<li><span>Endere&ccedil;o de IPv4 p&uacute;blico:</span></li>
+										<li><span>Gateway Padrao:</span></li>
+										<li><span>DNS Prim&aacute;rio:</span></li>
+										<li><span>DNS Secund&aacute;rio:</span></li>
+										</ul>
+									</div>
+									<div id="internet_v4_table">
+										<ul>
+										<li>192.168.1.1</li>
+										<li>203.0.113.100</li>
+										<li>203.0.113.1</li>
+										<li>203.0.113.115</li>
+										<li>203.0.113.215</li>
+										</ul>
+									</div> 
+								</div>						
+								<div id="tabip-02" class="tab">
+									<div id="tabela_esquerda">
+										<ul>
+										<li><span>Prefixo Delegado:</span></li>
+										<li><span>Endere&ccedil;o de IPv6 Link-Local - LAN:</span></li>
+										<li><span>Endere&ccedil;o de IPv6 Global - WAN:</span></li>
+										<li><span>Gateway Padrao:</span></li>
+										<li><span>DNS Prim&aacute;rio:</span></li>
+										<li><span>DNS Secund&aacute;rio:</span></li>
+										</ul>
+									</div>
+									<div id="internet_v6_table">
+										<ul>
+											<li>2804:1b3:a980:9dd9::/48</li>
+											<li>fe80::dac6:78ff:fe9d:a2b0/64</li>
+											<li>2804:1b3:a5ec:9b66:dac6:78ff:fe9d:a2b0/64</li>
+											<li>fe80::2e4:6ff:fee4:9ca2</li>
+											<li>2001:12e0:0:1025:a080::115</li>
+											<li>2001:12e0:0:1025:a080::215</li>
+										</ul>
+									</div> 
+								</div>
+						</td>
+
+				</tr>
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+					<tr>					
+						<th>
+							<img src="/html/assets/_images/gateway_sophia/wifi-locked2.png" alt="REDE WI-FI"/>
+							<span>WI-FI 2.4GHZ</span>
+						</th>
+						<td>
+							<div class="status-line-1 red">
+								<strong>SSID: </strong> SEU_SSID_WIFI<br/>
+								<span>Desativado</span>															
+							</div>
+						</td>
+						<td class="status-link">
+							 <a href="#"><span>Detalhes</span></a>
+						</td>
+					</tr>
+					<tr>
+						<td class="text-title">
+							<div id="tabela_esquerda">
+				        		<ul>
+									<li class="li_par"><span>Seguran&ccedil;a:</span></li>
+									<li class="li_impar">WPA2</li>
+									<li class="li_par"><span>WPS:</span></li>
+									<li class="li_impar">Habilitado</li>
+									<li class="li_par"><span>An&uacute;ncio do SSID:</span></li>
+									<li class="li_impar">Habilitado</li>
+									<li class="li_par"><span>Canal:</span></li>
+									<li class="li_impar">11</li>
+								</ul>
+							</div>
+						</td>
+						<td colspan="2" class="bg-cinza">
+							<div id="wlan_information">
+								<textarea readonly="readonly" id="infoDisplay_24G" rows=9 cols=57 class=text-left></textarea>
+							</div>
+						</td>
+					</tr>
+
+
+
+
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+					<tr>					
+						<th>
+							<img src="/html/assets/_images/gateway_sophia/wifi-locked2.png" alt="REDE WI-FI"/>
+							<span>WI-FI 5GHZ</span>
+						</th>
+						<td>
+							<div class="status-line-2 red">
+								<strong>SSID: </strong> SEU_SSID_WIFI<br/>
+								<span>Desativado</span>															
+							</div>
+							<div class="status-line-2 red">
+								<strong>SSID: </strong> SEU_SSID_WIFI<br/>
+								<span>Desativado</span>
+							</div>
+						</td>
+						<td class="status-link">
+							<a href="#"><span>Detalhes</span></a>
+						</td>
+					</tr>
+					<tr>
+					    <td class="text-title"><div id="tabela_esquerda">
+				        <ul>
+						<li class="li_par"><span>Seguran&ccedil;a:</span></li>
+						<li class="li_impar">WPA2</li>
+						<li class="li_par"><span>WPS:</span></li>
+						<li class="li_impar">Habilitado</li>
+						<li class="li_par"><span>An&uacute;ncio do SSID:</span></li>
+						<li class="li_impar">Habilitado</li>
+						<li class="li_par"><span>Canal:</span></li>
+						<li class="li_impar">40</li>
+						</ul>
+						</div></td>
+						<td colspan="2" class="bg-cinza">
+							<div id="wlan5g_information">
+								<textarea readonly="readonly" rows=9 cols=57 class=text-left id="infoDisplay_5G"></textarea>
+							</div>
+						</td>
+					</tr>
+
+
+
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+					<tr id="HotSpot">					
+						<th>
+							<img src="/html/assets/_images/gateway_sophia/wifi-locked2.png" alt="HOTSPOT" />
+							<span></span>
+						</th>
+						<td>
+							<div class="status-line-1 green">
+								<strong></strong>: VIVOFIBRA-A2B0_GUEST1<br/>
+								<span>Desativado</span>
+							</div>
+						</td>
+					</tr>
+					<tr></tr>
+
+
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+					<tr>					
+						<th>
+							<img src="/html/assets/_images/gateway_sophia/icon-local.png" alt="REDE LOCAL"/>
+							<span>Rede Local</span>
+						</th>
+						<td>
+
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+								<div class="status-line-2 green">
+								<strong>LAN1:</strong><br />								
+								<div>Unknown</div>
+								</div>
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+								<div class="status-line-2 green">
+								<strong>LAN2:</strong><br />								
+								<div>deco-X50</div>
+								</div>
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+								<div class="status-line-2 green">
+								<strong>LAN3:</strong><br />								
+								<div>Dra_Efigenia</div>
+								</div>
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+								<div class="status-line-2 green">
+								<strong>LAN4:</strong><br />								
+								<div>deco-X50</div>
+								</div>
+						
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+						</td>
+						<td class="status-link">
+							 <a href="#"><span>Detalhes</span></a>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="2" class="bg-cinza">
+						<div>
+						<textarea readonly="readonly" rows=9 cols=57 class=text-left id="infoDisplay_Lan" ></textarea>						
+						</div>
+						</td>
+					</tr>
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+					<tr>
+						<th>
+							<img src="/html/assets/_images/gateway_sophia/icon-set-top.png" alt="SET-TOP BOX" />
+							<span>TV</span>
+						</th>
+						<td>
+							<div class="status-line-1 status-line-2 red" style="width: 65px;">
+								<strong>Indispon&iacute;vel</strong>
+							</div>							
+						</td>
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+						<td class="status-link">
+							 <a href="#"><span>Detalhes</span></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td colspan="2" class="bg-cinza">
+						<div>
+						<textarea readonly="readonly" rows=9 cols=57 class=text-left id="infoDisplay_Tv" ></textarea>						
+						</div>
+						</td>
+					</tr>
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+					<tr id="VOIP">					
+						<th>
+							<img src="/html/assets/_images/gateway_sophia/icon-phone.png" alt="Phone" />
+							<span>Telefone</span>
+						</th>
+						<td>
+							<div class="status-line-2 green" style="width: 65px;">
+							<strong><span>Rede</span>:</strong><br />
+							<span>Dispon&iacute;vel</span>
+							</div>
+							<div class="status-line-2 red">
+							<strong><span>Telefone</span>:</strong><br />
+							N&atilde;o Registrado
+							</div>	
+						</td>
+						<td class="status-link">
+							<a href="#"><span>Detalhes</span></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td colspan="2" class="bg-cinza">
+						<div>
+							<textarea readonly="readonly" rows=9 cols=57 class=text-left id="infoDisplay_Voip"></textarea>
+						</div>
+						</td>
+					</tr>
+				</table>
+			<!--/div--><!--col-722-->
+		
+			<div class="clear"></div>
+			
+		</div><!--conteudo-->
+		
+		<div class="clear"></div>
+		
+	</div><!--wrap-->
+	
+<!--/div--><!--content-->
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+<script>
+  	var catFile_24g = "N&atilde;o h&aacute; dispositivos conectados.";
+	document.getElementById("infoDisplay_24G").value += catFile_24g + '\n';
+</script>	
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "--------- LAN1 -------------";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "Hostname: Unknown";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "MAC: AA:BB:CC:DD:11:11";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IP: 192.168.1.114";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IPv6(SLAAC): ";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IPv6(DHCPv6): ";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "Static";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "--------- LAN2 -------------";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "Hostname: deco-X50";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "MAC: AA:BB:CC:DD:0F:0F";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IP: 192.168.1.87";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IPv6(SLAAC): ";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IPv6(DHCPv6): ";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "DHCP";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "--------- LAN3 -------------";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "Hostname: Dra_Efigenia";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "MAC: AA:BB:CC:DD:12:12";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IP: 192.168.1.101";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IPv6(SLAAC): 2804:1b3:a980:9dd9:68f1:a35f:ca06:25a1";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IPv6(DHCPv6): ";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "DHCP";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "--------- LAN4 -------------";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "Hostname: deco-X50";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "MAC: AA:BB:CC:DD:10:10";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IP: 192.168.1.53";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IPv6(SLAAC): ";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "IPv6(DHCPv6): ";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "DHCP";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Lan = "";
+	document.getElementById("infoDisplay_Lan").value += catFile_Lan + '\n';
+</script>	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+
+<script>
+  	var catFile_Tv = "N&atilde;o h&aacute; dispositivos conectados.";
+	document.getElementById("infoDisplay_Tv").value += catFile_Tv + '\n';
+</script>	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
+
+
+
+
+
+
+
+	
+
+<script>
+  	var catFile_Voip = "Endereco IP de VoIP: 10.166.222.111";
+	document.getElementById("infoDisplay_Voip").value += catFile_Voip + '\n';
+</script>	
+	
+
+
+
+
+
+
+

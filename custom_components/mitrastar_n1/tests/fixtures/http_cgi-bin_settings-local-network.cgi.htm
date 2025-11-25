@@ -1,0 +1,2853 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noindex">
+<title>VIVO</title>
+
+<link rel="stylesheet" type="text/css" href="/html/assets/_css/gateway_sophia.css"/>
+<link rel="stylesheet" type="text/css" href="/html/assets/_css/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="/html/assets/_js/fancybox/jquery.fancybox.css" />
+
+<script type="text/javascript" src="/html/assets/_js/jquery-1.5.min.js"></script>
+<script type="text/javascript" src="/html/assets/_js/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript" src="/html/assets/_js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/html/assets/_js/jquery-ui.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+<script>
+$(document).ready(function () {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+	$('#portForwarding_rule_list').load('/cgi-bin/GVT_portForwarding_rule.cgi');
+	$('#dhcp_static_list').load('/cgi-bin/settings-local-network-dhcp.cgi');
+	$('#dhcpClientList').load('/cgi-bin/dhcp_client_list.cgi');
+	$('#reservation_selectindex').load('/cgi-bin/sophia_dhcp_SelectIndex.cgi');
+		
+//	$("#dhcp_static_list").slideDown("slow");
+	$('#accordion a.item').click(function () {
+		$('#accordion li').children('ul').slideUp('fast');	
+		$("#accordion a").removeClass("active");
+		$(this).addClass("active");
+		$(this).siblings('ul').slideDown('fast');	
+		return false;
+	});
+	ShowValue();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+	CheckDHCPState();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+    $('#MLG_DHCP_Reserve').click(function () {
+		doDhcpReserve();
+		});		
+
+	$('#MLG_Dhcp_Cancel').click(function () {
+		window.location.reload();
+		}); 
+	$('#MLG_Dhcp_Save').click(function () {
+//		window.location.reload();
+		DHCP_Save();
+		});
+	$("#Cancel_dmz").click(function(){
+		//alert("cancel button");
+			document.getElementById("dmz").reset(); 
+		}); 
+	$('#MLG_UPnP_Cancel').click(function () {
+		document.getElementById("UPnP_form").reset();
+		});		
+		upnpEnblCheck();
+ 
+//Page 5 :DDNS
+$('#MLG_DDNS_Account_Save').click(function () {
+	var username = document.RN_DDNSform.sysDDNSUser;
+	var passwd   = document.RN_DDNSform.sysDDNSPassword;
+	var hostname = document.RN_DDNSform.sysDDNSHost;
+	if(username.value.length == '' || !(invalidCharCheck(document.RN_DDNSform.sysDDNSUser)))//UserName can't contain invalid char or NULL
+	{
+		document.getElementById('MLG_DDNS_UserName_Err_Msg').style.display = "";
+		document.getElementById('sysDDNSUser').className = "invalid";
+		return false;	
+	}else{
+		document.getElementById('MLG_DDNS_UserName_Err_Msg').style.display = "none";
+		document.getElementById('sysDDNSUser').className = "";
+	}
+	
+	if(passwd.value.length == '' || !(invalidCharCheck(document.RN_DDNSform.sysDDNSPassword)))//Password can't contain invalid char or NULL
+	{
+		document.getElementById('MLG_DDNS_Password_Err_Msg').style.display = "";
+		document.getElementById('sysDDNSPassword').className = "invalid";
+		return false;	
+	}else{
+		document.getElementById('MLG_DDNS_Password_Err_Msg').style.display = "none";
+		document.getElementById('sysDDNSPassword').className = "";
+	}
+	if(hostname.value.length == '' || !(invalidCharCheck(document.RN_DDNSform.sysDDNSHost)))//Hostname can't contain invalid char or NULL
+	{
+		document.getElementById('MLG_DDNS_Hostname_Err_Msg').style.display = "";
+		document.getElementById('sysDDNSHost').className = "invalid";
+		return false;
+	}else{
+		document.getElementById('MLG_DDNS_Hostname_Err_Msg').style.display = "none";
+		document.getElementById('sysDDNSHost').className = "";
+	}
+	if(document.RN_DDNSform.sysDDNSUser.value.length <= 0 || document.RN_DDNSform.sysDDNSPassword.value.length <= 0 || document.RN_DDNSform.sysDDNSHost.value.length <= 0)
+	{
+		alert(document.getElementById("DDNS_Empty_Error").innerHTML);
+		return;
+	}
+	with (document.RN_DDNSform)
+	{
+		if (DDNSRadio[0].checked)
+		{			
+			var data = {
+				SaveBtn: "SAVE",
+				Enable_DyDNS: "Yes",
+				localNetWorkTabIndex: 5,
+				SERVICE_provider: SERVICE_provider.value,
+				sysDDNSHost: sysDDNSHost.value,	
+				sysDDNSUser: sysDDNSUser.value,
+				sysDDNSPassword: sysDDNSPassword.value
+			};
+		}
+		else
+		{	
+			// ==== According ES,User still can enter information and save the data in data model when choosing "Disable"
+			//alert(document.getElementById("MLG_DDNS_Disable_Alert").innerHTML);
+				var data = {
+					SaveBtn: "SAVE",
+					Enable_DyDNS: "No",
+					localNetWorkTabIndex: 5,
+					SERVICE_provider: SERVICE_provider.value,
+					sysDDNSHost: sysDDNSHost.value,
+					sysDDNSUser: sysDDNSUser.value,
+					sysDDNSPassword: sysDDNSPassword.value
+				};
+		}
+			var url = document.RN_DDNSform.action;
+			var callback;
+			callback = function(responseData, textStatus) {
+				$('.loading').fadeOut(200);
+				$('.loading-icon').fadeOut(400);
+				parent.frames["menufrm"].MenuMaskclose();
+				window.location.href = "/cgi-bin/settings-local-network.cgi";
+			};
+			$('.loading').fadeIn(200);
+			$('.loading-icon').fadeIn(400);
+			parent.frames["menufrm"].MenuMaskopen();
+			$.post(url, data, callback, "html");
+		}
+	});
+
+	$("#MLG_DDNS_Account_Cancel").click(function(){
+		//alert("cancel button");
+			document.getElementById("RN_DDNSform").reset(); 
+		}); 
+//Page 5 :DDNS
+ 
+	UpdateDNS();
+
+	btnPortForwardClear();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+});
+</script>	
+</head>
+
+<body>
+<script>
+var localNetWorkTabIndex = "1";
+
+	$(document).ready(function(){
+		document.form_DHCP.PON.value="1";
+		
+		$(".tab").slideUp();
+		$("#tab-0"+localNetWorkTabIndex).slideDown();
+		$("#tabtitle-"+localNetWorkTabIndex).addClass("active");
+		//$("#menu-loc-net li:first a").addClass("active");
+		
+		$("#menu-loc-net li a").click(function(){
+			var i = $(this).attr("rel");
+			$("#menu-loc-net li a").removeClass("active");
+			$(this).addClass("active");
+			$(".tab").slideUp();
+			$("#tab-"+i).slideDown();
+			return false;
+		});
+
+		//POP-UP
+		$("#btn-clicktocall, .btn-clicktocall").fancybox({
+			width : 580,
+			height : 201,
+			fitToView : false,
+			autoSize : false,
+			closeClick : false,
+			openEffect : 'elastic',
+			closeEffect : 'fade',
+			padding:15,
+			scrolling:"no",
+			keys: {
+				close: null
+			},
+			helpers: {
+				overlay: { closeClick: false }
+			}
+		});
+	});
+</script>
+
+<script>
+function ShowValue()
+{
+	var IP="192.168.1.1";
+	var digits=IP.split(".");
+	document.getElementById("routerIP_1").value = digits[0];
+	document.getElementById("routerIP_2").value = digits[1];
+	document.getElementById("routerIP_3").value = digits[2];
+	document.getElementById("routerIP_4").value = digits[3];
+	
+	var Mask="255.255.255.0";
+	digits=Mask.split(".");
+	document.getElementById("LanMask_1").value = digits[0];
+	document.getElementById("LanMask_2").value = digits[1];
+	document.getElementById("LanMask_3").value = digits[2];
+	document.getElementById("LanMask_4").value = digits[3];
+	
+	var Pool_Start = "192.168.1.2";
+	digits = Pool_Start.split(".");
+	document.getElementById("Add_Start_1").value = digits[0];
+	document.getElementById("Add_Start_2").value = digits[1];
+	document.getElementById("Add_Start_3").value = digits[2];
+	document.getElementById("Add_Start_4").value = digits[3];
+	  
+	var PoolSize = "199";
+	var tmp = Change2Hex(Pool_Start);
+	var Hex_End = parseInt(tmp, 16) + parseInt(PoolSize) - 1;
+	tmp = Hex_End.toString(16);
+	digits = tmp.match(/.{2}/g);
+	document.getElementById("Add_End_1").value = parseInt(digits[0], 16);
+	document.getElementById("Add_End_2").value = parseInt(digits[1], 16);
+	document.getElementById("Add_End_3").value = parseInt(digits[2], 16);
+	document.getElementById("Add_End_4").value = parseInt(digits[3], 16);
+
+	var LeaseTime = "14400";
+	document.getElementById("dhcp_LeaseTime").value = Number(LeaseTime) / 60;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+	  
+	var dnsmanual  = "192.168.1.1";
+	var digits = dnsmanual.split(".");
+	document.getElementById("PrimaryDns_1").value = digits[0];
+	document.getElementById("PrimaryDns_2").value = digits[1];
+	document.getElementById("PrimaryDns_3").value = digits[2];
+	document.getElementById("PrimaryDns_4").value = digits[3];
+		  
+	dnsmanual  = "192.168.1.1";
+	digits = dnsmanual.split(".");
+	document.getElementById("SecondDns_1").value = digits[0];
+	document.getElementById("SecondDns_2").value = digits[1];
+	document.getElementById("SecondDns_3").value = digits[2];
+	document.getElementById("SecondDns_4").value = digits[3];
+}
+
+function DHCP_Save()
+{
+	clearErrMsg();
+	with (document.form_DHCP) {
+		var endIp = Add_End_1.value + "." + Add_End_2.value + "." + Add_End_3.value + "." + Add_End_4.value;
+		var data = {
+			localNetWorkTabIndex: 1,
+			delnum: delnum.value,
+			addFlag: 0,
+			DHCP_ApplyFlag: 1,
+			uiViewIPAddr: 0,
+			uiViewNetMask: 0,
+			StartIp: 0,
+			PoolSize: 0, 
+			dhcpTypeRadio: 0,
+			MLG_DNSServer1_LANSetup: 0,
+			PrimaryDns: 0,
+			SecondDns:0,
+			dhcp_LeaseTime: 0
+		}
+		
+		if(dhcpTypeRadio[0].checked) //DHCP_enable
+			data.dhcpTypeRadio = 1;			
+		else  //DHCP_disable
+			data.dhcpTypeRadio = 0; 
+		
+		if(input_dns[0].checked) //DNS_enable 
+		{
+			data.MLG_DNSServer1_LANSetup = 1; //user defined
+			data.PrimaryDns = PrimaryDns_1.value + "." + PrimaryDns_2.value + "."+ PrimaryDns_3.value + "."+ PrimaryDns_4.value;
+			data.SecondDns = SecondDns_1.value + "." + SecondDns_2.value + "."+ SecondDns_3.value + "."+ SecondDns_4.value;		
+		}			
+		else
+		{
+			data.MLG_DNSServer1_LANSetup = 2; //dns proxy
+			data.PrimaryDns = "192.168.1.1"
+			data.SecondDns = "192.168.1.1"
+		}
+		
+		data.uiViewIPAddr = routerIP_1.value + "." + routerIP_2.value + "." + routerIP_3.value + "." + routerIP_4.value;
+		data.uiViewNetMask = LanMask_1.value + "." + LanMask_2.value + "." + LanMask_3.value + "." + LanMask_4.value;
+		data.StartIp = Add_Start_1.value + "." + Add_Start_2.value + "." + Add_Start_3.value + "." + Add_Start_4.value;
+		data.dhcp_LeaseTime = parseInt(dhcp_LeaseTime.value) * 60;
+
+        if(data.uiViewIPAddr == data.PrimaryDns || data.uiViewIPAddr == data.SecondDns){
+            data.MLG_DNSServer1_LANSetup = 2;
+            data.PrimaryDns = data.uiViewIPAddr;
+            data.SecondDns = data.uiViewIPAddr;
+        }
+
+		if(input_dns[0].checked) //DNS_enable
+		{
+			if((routerIP_1.value == "") || (routerIP_2.value == "") || (routerIP_3.value == "") || (routerIP_4.value == "") || (LanMask_1.value == "") || (LanMask_2.value == "") || (LanMask_3.value == "") || (LanMask_4.value == "") 
+			 || (Add_Start_1.value == "") || (Add_Start_2.value == "") || (Add_Start_3.value == "") || (Add_Start_4.value == "") || (Add_End_1.value == "") || (Add_End_2.value == "") || (Add_End_3.value == "") || (Add_End_4.value == "")
+			 || (PrimaryDns_1.value == "") || (PrimaryDns_2.value == "") || (PrimaryDns_3.value == "") || (PrimaryDns_4.value == "") || (SecondDns_1.value == "") || (SecondDns_2.value == "") || (SecondDns_3.value == "") || (SecondDns_4.value == "")
+			 || (dhcp_LeaseTime.value == ""))
+			{
+				document.getElementById('MLG_DHCP_Warn').style.display = "";
+				document.getElementById('MLG_DHCP_Invalid').style.display = "none";
+				document.getElementById('MLG_DHCP_Invalid_LeaseTime').style.display = "none";
+				return false;
+			}else{
+				document.getElementById('MLG_DHCP_Warn').style.display = "none";
+			}
+		}
+		else
+		{
+			if((routerIP_1.value == "") || (routerIP_2.value == "") || (routerIP_3.value == "") || (routerIP_4.value == "") || (LanMask_1.value == "") || (LanMask_2.value == "") || (LanMask_3.value == "") || (LanMask_4.value == "") 
+			 || (Add_Start_1.value == "") || (Add_Start_2.value == "") || (Add_Start_3.value == "") || (Add_Start_4.value == "") || (Add_End_1.value == "") || (Add_End_2.value == "") || (Add_End_3.value == "") || (Add_End_4.value == "")
+			 || (dhcp_LeaseTime.value == ""))
+			{
+				document.getElementById('MLG_DHCP_Warn').style.display = "";
+				document.getElementById('MLG_DHCP_Invalid').style.display = "none";
+				document.getElementById('MLG_DHCP_Invalid_LeaseTime').style.display = "none";
+				return false;
+			}else{
+				document.getElementById('MLG_DHCP_Warn').style.display = "none";
+			}
+		}
+
+		
+		if (inValidIPAddr(data.PrimaryDns) || inValidIPAddr(data.SecondDns) || inValidIPAddr(data.uiViewIPAddr) || inValidIPAddr(data.StartIp) || inValidIPAddr(endIp) || unValidMask(data.uiViewNetMask))
+		{
+			document.getElementById('MLG_DHCP_Invalid').style.display = "";
+			document.getElementById('MLG_DHCP_Warn').style.display = "none";
+			document.getElementById('MLG_DHCP_Invalid_LeaseTime').style.display = "none";
+			return false;	
+		}else{
+			document.getElementById('MLG_DHCP_Invalid').style.display = "none";
+		}
+		
+		if (isNaN(dhcp_LeaseTime.value))
+		{
+			document.getElementById('MLG_DHCP_Invalid_LeaseTime').style.display = "";
+			document.getElementById('MLG_DHCP_Warn').style.display = "none";
+			document.getElementById('MLG_DHCP_Invalid').style.display = "none";
+			return false;	
+		}else{
+			document.getElementById('MLG_DHCP_Invalid_LeaseTime').style.display = "none";
+		}
+		if(data.uiViewIPAddr == data.StartIp)
+		{
+			document.getElementById('MLG_DHCP_Invalid_IPRange6').style.display = "";
+			return;
+		}
+		if(data.uiViewIPAddr == endIp)
+		{
+			document.getElementById('MLG_DHCP_Invalid_IPRange7').style.display = "";
+			return;
+		}
+		if(!CheckSameSubnet(data.uiViewIPAddr, data.uiViewNetMask, data.StartIp))
+		{
+			document.getElementById('MLG_DHCP_Invalid_IPRange1').style.display = "";
+			return;
+		}
+		
+		if(!CheckSameSubnet(data.uiViewIPAddr, data.uiViewNetMask, endIp))
+		{
+			document.getElementById('MLG_DHCP_Invalid_IPRange2').style.display = "";
+			return;
+		}
+		
+		var ConSerPoolActive = "Yes";
+		var tempConSerPoolStart = "192.168.1.230";
+		var tempConSerPoolEnd = "192.168.1.254";
+		var LanIP = Change2Hex(data.uiViewIPAddr);
+		var DhcpPoolStartIP = Change2Hex(data.StartIp);
+		var DhcpPoolEndIP = Change2Hex(endIp);
+		var ConSerPoolStart = Change2Hex(tempConSerPoolStart);
+		var ConSerPoolEnd = Change2Hex(tempConSerPoolEnd);
+		
+		if(parseInt(LanIP, 16) >= parseInt(DhcpPoolStartIP, 16) && parseInt(LanIP, 16) <= parseInt(DhcpPoolEndIP, 16))
+		{
+			document.getElementById('MLG_DHCP_Invalid_IPRange4').style.display = "";
+			return;
+		}
+
+
+		if(ConSerPoolActive == "Yes"){
+			if(parseInt(LanIP, 16) >= parseInt(ConSerPoolStart, 16) && parseInt(LanIP, 16) <= parseInt(ConSerPoolEnd, 16))
+			{
+				alert("DHCP Conditional Serving Pool range < " + tempConSerPoolStart + "~" + tempConSerPoolEnd +"> can not contain IP address.");
+				return;
+			}
+		}
+		
+		StartIP = Change2Hex(data.StartIp);
+		EndIP = Change2Hex(endIp);
+		sum = parseInt(EndIP, 16) - parseInt(StartIP, 16);
+		if(sum < 0)
+		{
+			document.getElementById('MLG_DHCP_Invalid_IPRange3').style.display = "";
+			return;
+		}
+		else
+		{
+			data.PoolSize = parseInt(sum) + 1;
+		}
+	}
+	var url = document.form_DHCP.action;
+	var callback;
+	
+	callback = function(responseData, textStatus) {
+		$('.loading').fadeOut(200);
+		$('.loading-icon').fadeOut(400);
+		parent.frames["menufrm"].MenuMaskclose();
+		window.location.href = "/cgi-bin/settings-local-network.cgi";
+	};
+	$('.loading').fadeIn(200);
+	$('.loading-icon').fadeIn(400);
+	parent.frames["menufrm"].MenuMaskopen();
+	$.post(url, data, callback, "html");
+}
+function CheckSameSubnet(RouterIP, Subnet, IP)
+{
+	var digits1=RouterIP.split(".");
+	var digits2=Subnet.split(".");
+	var digits3=IP.split(".");
+ 	for(i=0;i<4;i++)
+	{
+		if((digits1[i] & digits2[i]) != (digits2[i] & digits3[i]))
+			return false;
+	}
+	return true;	
+}
+function Change2Hex(IP)
+{
+	var digits=IP.split(".");
+	var flag;
+	var tmp;
+	var Hexdigits = "0x";
+	for(i =0; i<4; i++)
+	{
+		tmp = parseInt(digits[i]);
+		flag = tmp.toString(16);
+		if(flag.length == 1)
+			flag = "0" + tmp.toString(16);
+
+		Hexdigits += flag;
+	}
+	return Hexdigits;
+}
+</script>
+
+<script type="text/javascript">
+
+function UpdateDNS() {  
+	if (document.getElementById("input_dns").checked == true) {
+		document.getElementById("tr_custom_dns_primary").style.display = "";
+		document.getElementById("tr_custom_dns_secondary").style.display = "";
+	}
+	else {
+		document.getElementById("tr_custom_dns_primary").style.display = "none";
+		document.getElementById("tr_custom_dns_secondary").style.display = "none";
+	}
+}
+
+function UpdateDNSState() {
+    if (document.getElementById("input_dns").checked == true) {
+        document.getElementById("tr_custom_dns_primary").style.display = "";
+        document.getElementById("tr_custom_dns_secondary").style.display = "";
+        document.getElementById("PrimaryDns_1").value = "";
+        document.getElementById("PrimaryDns_2").value = "";
+        document.getElementById("PrimaryDns_3").value = "";
+        document.getElementById("PrimaryDns_4").value = "";
+        document.getElementById("SecondDns_1").value = "";
+        document.getElementById("SecondDns_2").value = "";
+        document.getElementById("SecondDns_3").value = "";
+        document.getElementById("SecondDns_4").value = "";
+    }
+    else {
+        document.getElementById("tr_custom_dns_primary").style.display = "none";
+        document.getElementById("tr_custom_dns_secondary").style.display = "none";
+    }
+}
+
+function btnUpnpApplySave()
+{
+	with(document.UPnP_form){
+		var data = {
+			localNetWorkTabIndex: 4,
+			upnpsaveFlag : 1,
+			UPnP_auto : UPnP_auto.value
+		};
+		if (enblUpnp[0].checked){
+			data.enblUpnp = "Yes";
+			data.UPnP_auto = "1";
+		}
+		else{ 
+			data.enblUpnp = "No";
+			data.UPnP_auto = "0";
+		}
+	}
+	var url = document.UPnP_form.action;
+	var callback = function(responseData, textStatus) 
+	{
+		$('.loading').fadeOut(200);
+		$('.loading-icon').fadeOut(400);
+		parent.frames["menufrm"].MenuMaskclose();
+		window.location.href = "/cgi-bin/settings-local-network.cgi";
+	};
+	$('.loading').fadeIn(200);
+	$('.loading-icon').fadeIn(400);
+	parent.frames["menufrm"].MenuMaskopen();
+	$.post(url, data, callback, "html");
+}
+
+function upnpEnblCheck()
+{
+	if (document.UPnP_form.enblUpnp[0].checked == true){
+		document.UPnP_form.enblUpnp[0].checked = true;
+		document.UPnP_form.enblUpnp[1].checked = false;
+	}
+	else{
+		document.UPnP_form.enblUpnp[0].checked = false;
+		document.UPnP_form.enblUpnp[1].checked = true;
+	}
+}
+
+function Multi_Language(){
+	var Language = $.cookie("CurrentLang");
+	var language_Index = get_language_index(Language);
+}
+
+	
+function chkPortRange(SourcPort,DestPort)
+{	
+	port = parseInt(SourcPort, 10);
+	port2 = parseInt(DestPort, 10);
+	
+	if(SourcPort == ""){
+		 //alert('Source Port should not be empty');
+		 alert(document.getElementById("MLG_PortForwarding_SourcePort_Empty").innerHTML);
+
+		 return true;
+	}
+	var CWMPConReqPort="7547";
+	if ( (port == CWMPConReqPort)  && ( document.PortForwarding_Form.PortRule_Protocol.value != "UDP")  )
+	{
+		alert(CWMPConReqPort+document.getElementById("MLG_PortForwarding_CWMP_Error").innerHTML);
+		return true;
+	}
+	if(isNaN(SourcPort)){	
+		 var source = SourcPort.match("^[0-9]{1,5}\:[0-9]{1,5}$");
+		  if(source == null) { 
+			 //alert('Invalid Source Port ' + SourcPort);
+   			 alert(document.getElementById("MLG_PortForwarding_SourcePort_Error").innerHTML + SourcPort);
+			return true;
+		  }	
+		if(isNaN(DestPort)){
+			 //alert('Invalid Destination Port ' + DestPort);
+			 alert(document.getElementById("MLG_PortForwarding_DestPort_Error").innerHTML + DestPort);
+			return true;
+		}			  
+		digits = source[0].split(":");
+		{
+			if((Number(digits[0]) > 65535 ) || (Number(digits[0]) < 1 ) || (Number(digits[1]) > 65535) || (Number(digits[1]) < 1 ) || (Number(digits[1]) < Number(digits[0])))
+			{ 
+				//alert('Invalid Source Port ' + SourcPort);
+				alert(document.getElementById("MLG_PortForwarding_SourcePort_Error").innerHTML + SourcPort);
+				return true;
+			}
+			else if ( (Number(digits[0]) <= CWMPConReqPort) && (Number(digits[1]) >= CWMPConReqPort) && ( document.PortForwarding_Form.PortRule_Protocol.value != "UDP")  )
+			{
+				alert(CWMPConReqPort+document.getElementById("MLG_PortForwarding_CWMP_Error").innerHTML);
+				return true;
+			}
+			else{
+				document.PortForwarding_Form.startSrcPort.value = Number(digits[0]);
+				document.PortForwarding_Form.endSrcPort.value = Number(digits[1]);
+				if(DestPort == ""){
+					document.PortForwarding_Form.startDestPort.value = Number(digits[0]);
+					document.PortForwarding_Form.endDestPort.value = Number(digits[1]);	
+				}
+				else{
+					document.PortForwarding_Form.startDestPort.value = parseInt(document.PortForwarding_Form.DestPort.value);
+					var range = digits[1] - digits[0];
+					document.PortForwarding_Form.endDestPort.value = parseInt(document.PortForwarding_Form.DestPort.value) + range;	
+				}		
+			}
+		}
+	}
+	else if (port > 65535 || port < 1)
+	{	
+		//alert('Invalid Source Port ' + SourcPort);
+		alert(document.getElementById("MLG_PortForwarding_SourcePort_Error").innerHTML + SourcPort);
+		return true;	
+	}
+	else if (port2 > 65535 || port2 < 1 || isNaN(DestPort) )
+	{	
+		//alert('Invalid Destination Port ' + DestPort);
+		alert(document.getElementById("MLG_PortForwarding_DestPort_Error").innerHTML + DestPort);
+		return true;	
+	}
+	else if (DestPort == "")
+	{	
+		 //alert('Destination Port should not be empty');
+ 		 alert(document.getElementById("MLG_PortForwarding_DestPort_Empty").innerHTML);
+		 return true;	
+	}
+	else{
+		document.PortForwarding_Form.startSrcPort.value = document.PortForwarding_Form.SourcPort.value;
+		document.PortForwarding_Form.startDestPort.value = document.PortForwarding_Form.DestPort.value;;
+	}
+
+	return false;
+}
+
+function isValidIpAddr(ip1,ip2,ip3,ip4)
+{
+if(ip1==0 || ip4==0 || ip4==255 || ip1==127 )	
+	return false;			
+
+return true;	
+}
+
+function inValidIPAddr(Address)
+{
+  var address = Address.match("^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$");
+  var digits;
+  var i;
+
+  if(address == null) { 
+  	//alert('Invalid IP address ' + Address);
+  	return true;
+  }
+  
+  digits = address[0].split(".");
+  for(i=0; i < 4; i++)
+  {
+  	if((Number(digits[i]) > 255 ) || (Number(digits[i]) < 0 ) || (Number(digits[0]) > 223) || (digits[i] == null))
+  	{ 
+  		//alert('Invalid IP address ' + Address);
+  		return true;
+  	}
+  }
+  if(!isValidIpAddr(digits[0],digits[1],digits[2],digits[3]))
+  {
+    	//alert("Invalid IP address " + Address);
+  	return true;
+  }
+  return false;
+}
+
+function unValidMask(Mask){
+	var mask = Mask.match("^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$");
+	var digits;
+	var bMask = 0;
+	var watch = false;
+	var i;
+  
+	var test=0;
+	var point=-1;
+	while(test!=-1){
+		point++;
+		test=Mask.indexOf(".",test+1);	
+	}
+	if(point<3){
+		//alert("Invalid subnet mask!");
+		return true;
+	}
+	if(mask == null){ 
+		//alert("Invalid subnet mask!");
+		return true;
+	}
+
+	digits = mask[0].split(".");
+	for(i=0; i < 4; i++){
+		if((Number(digits[i]) > 255 ) || (Number(digits[i]) < 0 )){
+			//alert("Invalid subnet mask!");
+			return true;
+		}
+		bMask = (bMask << 8) | Number(digits[i]);
+	}
+	if ((Number(digits[0]) == 0) && (Number(digits[1]) == 0) && (Number(digits[2]) == 0) && (Number(digits[3]) == 0)){
+		//alert("Invalid subnet mask!");
+		return true;	
+	}
+	bMask = bMask & 0x0FFFFFFFF;
+	
+	for(i=0; i<32; i++){
+		if((watch==true) && ((bMask & 0x1)==0)){
+			//alert("Invalid subnet mask!");
+			return true;
+		}
+		bMask = bMask >> 1;
+		if((bMask & 0x01) == 1){
+			watch=true;
+		}
+	}
+	return false;
+}
+
+function editPortForwardRuleClick(IndexVdsl,IndexAdsl){
+		//alert("editPortForwardRuleClick IndexVdsl="+IndexVdsl+"IndexAdsl="+IndexAdsl);
+		window.location.href="/cgi-bin/settings-local-network.cgi?isPortForwardEdit=1&IndexVdsl="+IndexVdsl+"&IndexAdsl="+IndexAdsl;
+}
+
+function delPortForwardRuleClick(IndexVdsl,IndexAdsl){
+		with(document.PortForwarding_Form){
+		var data = {
+			localNetWorkTabIndex: 2,
+			PorForwardDelFlag : 1,
+			ruleIndexVdsl:IndexVdsl,
+			ruleIndexAdsl:IndexAdsl
+		};
+	}
+	var url = document.PortForwarding_Form.action;
+	var callback = function(responseData, textStatus) 
+	{
+		$('.loading').fadeOut(200);
+		$('.loading-icon').fadeOut(400);
+		parent.frames["menufrm"].MenuMaskclose();
+		window.location.reload();
+		//window.location.href = "/cgi-bin/settings-local-network.cgi";
+	};
+	$('.loading').fadeIn(200);
+	$('.loading-icon').fadeIn(400);
+	parent.frames["menufrm"].MenuMaskopen();
+	$.post(url, data, callback, "html");
+}
+
+function btnPortForwardClear()
+{
+	document.getElementById("PortForwarding_Form_ID").reset(); 
+}
+
+function btnPortForwardAdd()
+{
+	if (document.PortForwarding_Form.RuleName.value == "")
+	{
+		//alert("Invalid RuleName");
+		alert(document.getElementById("MLG_RuleNameFormatError_JS").innerHTML);
+		return;	
+	}
+	
+	if (document.PortForwarding_Form.SourceIP.value != "")
+	{
+		if (inValidIPAddr(document.PortForwarding_Form.SourceIP.value))
+		{
+			//alert("Invalid SourceIP address " + document.PortForwarding_Form.SourceIP.value);
+			alert(document.getElementById("MLG_PortForwarding_SourceIP_Error").innerHTML + document.PortForwarding_Form.SourceIP.value);
+			document.PortForwarding_Form.SourceIP.value = "";
+			return;
+		}
+	}
+	
+	if (document.PortForwarding_Form.DestIP.value != "")
+	{
+		if (inValidIPAddr(document.PortForwarding_Form.DestIP.value))
+		{
+			//alert("Invalid DestIP address " + document.PortForwarding_Form.DestIP.value);
+			alert(document.getElementById("MLG_PortForwarding_DestIP_Error").innerHTML + document.PortForwarding_Form.DestIP.value);
+			document.PortForwarding_Form.DestIP.value = "0.0.0.0";
+			return;
+		}
+	}
+	else{
+		//alert("DestIP address should't be empty " );
+		alert(document.getElementById("MLG_PortForwarding_DestIP_Empty").innerHTML);
+		return;
+	}
+	if (chkPortRange(document.PortForwarding_Form.SourcPort.value,document.PortForwarding_Form.DestPort.value))
+	 return;
+	 
+	var RuleNameVdslArr = new Array(
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A"
+	);
+	var k=0;
+	for (i=0;i<32;i++){
+		if(RuleNameVdslArr[i]=="N/A"){
+			document.PortForwarding_Form.ruleIndexVdsl.value = i;
+			k = 1;
+			break;
+		}
+	}
+	if(k==0){
+		//alert("have no rule index");
+ 		alert(document.getElementById("MLG_RuleIndex_Empty").innerHTML);
+		return;
+	}
+
+	var ServiceNameAdslArr = new Array("GVT_PINHOLE",
+			  "NVR Porta de SRV",
+			  "NVR Porta UDP",
+			  "NVR Porta HTTP",
+			  "NVR Porta HTTPS",
+			  "NVR Porta RTSP",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A",
+			  "N/A");
+	var j=0;
+	for (i=0;i<32;i++){
+		if(ServiceNameAdslArr[i]=="N/A"){
+			document.PortForwarding_Form.ruleIndexAdsl.value = i;
+			j = 1;
+			break;
+		}
+	}
+	if(j==0){
+		//alert("have no rule adsl index");
+ 		alert(document.getElementById("MLG_RuleAdslIndex_Empty").innerHTML);
+		return;
+	}
+	
+	var edit_onclick = "";
+	var IpReserveEntryNum = "N/A";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+	with(document.PortForwarding_Form){
+		var data = {
+			localNetWorkTabIndex: 2,
+			PorForwardAddFlag : 1,
+			ruleIndexVdsl:ruleIndexVdsl.value,
+			ruleIndexAdsl:ruleIndexAdsl.value,
+			RuleName : RuleName.value,
+			PortRule_Protocol:PortRule_Protocol.value,
+			SourceIP : SourceIP.value,
+			DestIP : DestIP.value,
+			startSrcPort : parseInt(startSrcPort.value, 10),
+			endSrcPort : parseInt(endSrcPort.value, 10),
+			startDestPort : parseInt(startDestPort.value, 10),
+			endDestPort : parseInt(endDestPort.value, 10),
+			IpReserveEntryNum:IpReserveEntryNum,
+			MACAddress:$('#PortForwarding_MAC_Address').text()
+		};
+	}
+	
+	if(checkSameRule(data, edit_onclick)){
+		alert("Same rule has existed!!!");
+		return;
+	}
+	
+	var url = document.PortForwarding_Form.action;
+	var callback = function(responseData, textStatus) 
+	{
+		$('.loading').fadeOut(200);
+		$('.loading-icon').fadeOut(400);
+		parent.frames["menufrm"].MenuMaskclose();
+		//window.location.reload();
+		window.location.href = "/cgi-bin/settings-local-network.cgi";
+	};
+	$('.loading').fadeIn(200);
+	$('.loading-icon').fadeIn(400);
+	parent.frames["menufrm"].MenuMaskopen();
+	$.post(url, data, callback, "html");
+}
+
+function checkSameRule(data, edit_onclick){
+	var isSame = false;
+	$("#rulebody").children('tr').each(function(index, ele) {
+		if(edit_onclick != ""){
+			var str = $(ele).find('a[name=action_edit]').attr('onclick');
+			var i = str.indexOf("(");
+			str = str.slice(i);
+			if(str == edit_onclick) {//ignore edited rule
+				return;
+			}
+		}
+		isSame = true;
+		//check port with two cases: single or range
+		var src_arr = new Array(2);
+		var dest_arr = new Array(2);
+		if($(ele).children('td[name=srcport]').length > 0){
+			src_arr[0] = $(ele).children('td[name=srcport]').text();
+			src_arr[1] = 0;
+			dest_arr[0] = $(ele).children('td[name=destport]').text();
+			dest_arr[1] = 0;
+		}
+		else{
+			src_arr = $(ele).children('td[name=range_srcport]').text().split(':');
+			dest_arr = $(ele).children('td[name=range_destport]').text().split(':');
+		}
+		
+		if(src_arr[0] != data.startSrcPort || 
+			src_arr[1] != data.endSrcPort || 
+			dest_arr[0] != data.startDestPort || 
+			dest_arr[1] != data.endDestPort ||
+			$(ele).children('td[name=remoteip]').text() != data.SourceIP || 
+			$(ele).children('td[name=localip]').text() != data.DestIP ||
+			$(ele).children('td[name=protocol]').text() != data.PortRule_Protocol) isSame = false;
+
+		if(isSame) return false;
+	});
+	
+	return isSame;
+}
+
+function doSave(reboot) {
+	if(reboot=='')
+		reboot='No';
+
+	if (document.dmz.dmzHostIP.value != "0.0.0.0")
+	{
+		if (inValidIPAddr(document.dmz.dmzHostIP.value))
+		{
+			alert(document.getElementById("IP_Format_Error").innerHTML);
+			document.dmz.dmzHostIP.value = "0.0.0.0";
+			return;
+		}
+	}
+
+	if(document.dmz.dmzState[0].checked)
+	{
+		document.dmz.dmz_active.value =  "Yes";
+	}
+	else
+	{
+		document.dmz.dmz_active.value =  "No";	
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	var PON=document.form_DHCP.PON.value;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	with (document.dmz)
+	{
+		var data = {
+			dmzFlag: 1,
+			localNetWorkTabIndex: 3,
+			dmz_active: dmz_active,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			PON:PON,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			NAT_DMZ_Index: 0,
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			dmzHostIP: 0,
+			rebootFlag: reboot
+		}		
+		
+		if (dmzHostIP.value == "0.0.0.0")
+		{
+			data.dmz_active = "No";
+			data.dmzHostIP = "0.0.0.0";
+		}
+		else
+		{
+			data.dmz_active = document.dmz.dmz_active.value;
+			var edit_ipaddr = dmzHostIP.value.split(".");
+			data.dmzHostIP = parseInt(edit_ipaddr[0], 10) + "." + parseInt(edit_ipaddr[1], 10) + "." + parseInt(edit_ipaddr[2], 10) + "." + parseInt(edit_ipaddr[3], 10);
+		}
+	}		
+	var url = document.dmz.action;
+	var callback = function(responseData, textStatus) {
+		if(reboot == "No") {
+			$('.loading').fadeOut(200);
+			$('.loading-icon').fadeOut(400);
+			parent.frames["menufrm"].MenuMaskclose();
+			window.location.href = "/cgi-bin/settings-local-network.cgi";
+		}
+	};
+	$('.loading').fadeIn(200);
+	$('.loading-icon').fadeIn(400);
+	parent.frames["menufrm"].MenuMaskopen();
+	$.post(url, data, callback, "html");
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+function readTxtFile(file) {
+    var resultStr = "";
+    
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function() {
+        if(rawFile.readyState === 4) {
+            if(rawFile.status === 200 || rawFile.status == 0) {
+                var allText = rawFile.responseText;
+                resultStr = allText;
+            }
+        }
+    }
+    rawFile.send(null);
+    return resultStr;
+}
+function doShowFindoutMAC() {
+	var IpReserveEntryNum = "N/A"
+	var maxDhcpNum = Number("32");
+
+	document.getElementById("MLG_PortForward_Err_Msg_1").style.display = "none";
+	document.getElementById("MLG_PortForward_Err_Msg_2").style.display = "none";
+
+	var IPAddress = new Array("192.168.1.102",
+		"192.168.1.101",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A"
+		);
+
+	var MACAddress = new Array("AA:BB:CC:DD:0E:0E",
+		"AA:BB:CC:DD:12:12",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A",
+		"N/A"
+		);
+
+	var text = readTxtFile("/resultMAC.log");
+
+	if(text=="") {
+		document.getElementById("MLG_PortForward_Err_Msg_1").style.display = "";
+		$('#IP_reserve').prop("checked", false);
+	}
+	else {
+		var DuplicateIP = 0;
+		var DuplicateMAC = 0;
+		$('#PortForwarding_MAC_Address').text(text);
+
+		for(i=0; i<maxDhcpNum; i++) {
+		  	if(IPAddress[i] == $('#DestIP_ID').val() && i!= IpReserveEntryNum){
+				DuplicateIP = 1;
+				break;
+			}
+  			if(MACAddress[i] == $('#PortForwarding_MAC_Address').text() && i!= IpReserveEntryNum) {
+				DuplicateMAC = 1;
+				break;
+			}
+		}
+
+		if(DuplicateIP == 1 || DuplicateMAC == 1) {
+			document.getElementById("MLG_PortForward_Err_Msg_2").style.display = "";
+		}
+
+		$('#IP_reserve').prop("checked", true);
+	}
+}
+
+function FindMacAddress(IPAddr) {
+	var data = {
+		IP:IPAddr
+	};
+
+	var url = "/cgi-bin/IP_Find_LanHostMac.cgi";
+	var callback = function(responseData, textStatus) {
+		$('.loading').fadeOut(200);
+		$('.loading-icon').fadeOut(400);
+		parent.frames["menufrm"].MenuMaskclose();
+		doShowFindoutMAC();
+	};
+	$('.loading').fadeIn(200);
+	$('.loading-icon').fadeIn(400);
+	parent.frames["menufrm"].MenuMaskopen();
+	$.post(url, data, callback, "html");
+}
+</script>
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="content">
+	<input type="HIDDEN" name="sessionKey" id="sessionKey" value="">
+	<div style="display:none" id="newkey"></div>	
+	<div class="wrap">
+
+		<div id="conteudo-gateway">
+				<h3 class="text-up"><span id='MLG_Local_Network_title'>Rede Local</span></h3>
+				
+				<div id="menu-loc-net">
+					<ul>
+						<li><a href="#" rel="01" id="tabtitle-1">DHCP</a></li>
+						<li><a href="#" rel="02" id="tabtitle-2"><span id="MLG_PortForwarding_Title">Redirecionar Portas</span></a></li>
+						<li><a href="#" rel="03" id="tabtitle-3">DMZ</a></li>
+						<li><a href="#" rel="04" id="tabtitle-4">UPNP</a></li>
+						<li><a href="#" rel="05" id="tabtitle-5" class="no-border">DDNS</a></li>
+					</ul>
+				</div><!--menu-loc-net-->
+				
+				<div class="clear"></div>
+<script>
+
+function doHexCheck(c)
+{
+  if ((c >= "0")&&(c <= "9"))
+  {
+    return 1;
+  }
+  else if ((c >= "A")&&(c <= "F"))
+  {
+    return 1;
+  }
+  else if ((c >= "a")&&(c <= "f"))
+  {
+    return 1;
+  }
+
+  return -1;
+}
+
+function editClick(index)
+{
+	document.form_DHCP.editNum.value = index;
+	document.form_DHCP.editFlag.value = 1;
+	var temp, IPAddr;
+	switch(index)
+	{
+		case 0:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "AA:BB:CC:DD:0E:0E";
+			IPAddr = "192.168.1.102";
+			break;
+		case 1:
+			document.form_DHCP.Host_chosen.value = "Dra_Efigenia";
+			document.form_DHCP.MAC_chosen.value = "AA:BB:CC:DD:12:12";
+			IPAddr = "192.168.1.101";
+			break;
+		case 2:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 3:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 4:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 5:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 6:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 7:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 8:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 9:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 10:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 11:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 12:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 13:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 14:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 15:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 16:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 17:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 18:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 19:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 20:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 21:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 22:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 23:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		case 24:
+			document.form_DHCP.Host_chosen.value = "";
+			document.form_DHCP.MAC_chosen.value = "";
+			IPAddr = "";
+			break;
+		default :
+			break;
+	}
+	
+	temp = IPAddr.split("."); //split IPaddress into 4 parts
+	document.form_DHCP.IPaddr_1.value = temp[0];
+	document.form_DHCP.IPaddr_2.value = temp[1];
+	document.form_DHCP.IPaddr_3.value = temp[2];
+	document.form_DHCP.IPaddr_4.value = temp[3];
+}
+
+function delClick(index)
+{
+	clearErrMsg();
+	with (document.form_DHCP)
+	{
+		var data = {
+		localNetWorkTabIndex: 1,
+		addFlag: 0,
+		delnum: index
+		};
+	var url = action;
+	var callback;
+	callback = function(responseData, textStatus) {
+		$('.loading').fadeOut(200);
+		$('.loading-icon').fadeOut(400);
+		parent.frames["menufrm"].MenuMaskclose();
+		window.location.reload();	
+		};
+	$('.loading').fadeIn(200);
+	$('.loading-icon').fadeIn(400);
+	parent.frames["menufrm"].MenuMaskopen();	
+	$.post(url, data, callback, "html");
+	}
+}
+
+function doMACcheck(object)
+{
+	var szAddr = object.value;
+	var len = szAddr.length;
+
+	if ( len == 0 )
+	{
+		document.getElementById("MAC_chosen").value ="AA:BB:CC:DD:13:13";
+		return 0;
+	}
+
+	if ( len == 12 )
+	{
+		var newAddr = "";
+		var i = 0;
+
+		for ( i = 0; i < len; i++ )
+		{
+			var c = szAddr.charAt(i);
+      
+			if ( doHexCheck(c) < 0 )
+			{
+				document.getElementById("MLG_DHCP_MAC_Err_Msg_1").style.display = "";
+				return -1;
+			}
+			if ( (i == 2) || (i == 4) || (i == 6) || (i == 8) || (i == 10) )
+			newAddr = newAddr + ":";
+		newAddr = newAddr + c;
+		}
+		document.getElementById("MAC_chosen").value = newAddr;
+		return 0;
+	}
+	else if ( len == 17 )
+	{
+		var i = 2;
+		var c0 = szAddr.charAt(0);
+		var c1 = szAddr.charAt(1);
+
+    if ( (doHexCheck(c0) < 0) || (doHexCheck(c1) < 0) )
+    {
+		document.getElementById("MLG_DHCP_MAC_Err_Msg_1").style.display = "";
+		return -1;
+    }
+    
+    i = 2;
+    while ( i < len )
+    {
+		var c0 = szAddr.charAt(i);
+		var c1 = szAddr.charAt(i+1);
+		var c2 = szAddr.charAt(i+2);  
+		if ( (c0 != ":") || (doHexCheck(c1) < 0) || (doHexCheck(c2) < 0) )
+		{
+			document.getElementById("MLG_DHCP_MAC_Err_Msg_1").style.display = "";
+			return -1;
+		}
+		i = i + 3;
+    }
+    	return 0; 
+	}
+	else
+	{
+		document.getElementById("MLG_DHCP_MAC_Err_Msg_1").style.display = "";
+		return -1;
+	}
+}
+
+
+function updatelanClient(IndexValue)
+{
+   var IPAddr;
+   var temp;
+   var hostData;
+   
+   document.form_DHCP.editFlag.value = "0";
+   
+   if(IndexValue != "")
+   {
+		document.form_DHCP.editMAC.value = "0";
+		hostData = IndexValue.split(" ");
+		 
+		document.form_DHCP.Host_chosen.value = hostData[0];
+		document.form_DHCP.MAC_chosen.value = hostData[1];
+		IPAddr = hostData[2];
+		temp = IPAddr.split("."); //split IPaddress into 4 parts
+	   
+		document.getElementById("MAC_chosen").disabled = true;
+		document.form_DHCP.IPaddr_1.value = temp[0];
+		document.form_DHCP.IPaddr_2.value = temp[1];
+		document.form_DHCP.IPaddr_3.value = temp[2];
+		document.form_DHCP.IPaddr_4.value = temp[3];
+   } 
+   else
+   {
+		document.form_DHCP.editMAC.value = "1"; //add new MAC
+		document.form_DHCP.Host_chosen.value = ""; //hostname is null
+		document.getElementById("MAC_chosen").disabled = false;
+		document.form_DHCP.MAC_chosen.value = ""; //add new MAC
+		document.form_DHCP.IPaddr_1.value = "";
+		document.form_DHCP.IPaddr_2.value = "";
+		document.form_DHCP.IPaddr_3.value = "";
+		document.form_DHCP.IPaddr_4.value = "";
+   }
+}
+
+
+function doDhcpReserve(){
+	clearErrMsg();
+	var DuplicateIP = 0;
+    var temp;
+	var maxDhcpNum = Number("32");
+	if(document.form_DHCP.emptyEntry.value == "N/A" && document.form_DHCP.editFlag.value != 1)
+	{
+		document.getElementById("MLG_DHCP_Reserve_Err_Msg").style.display = "";
+		return;
+	}
+	if(document.form_DHCP.editMAC.value == 1)
+    {
+       //check MAC address format
+       var check_MAC = document.getElementById("MAC_chosen");
+       temp=doMACcheck(check_MAC);
+       if(temp < 0)
+          return;
+    }
+    var MAC_Addr = document.form_DHCP.MAC_chosen.value.toUpperCase();
+    var IP_Addr = document.form_DHCP.IPaddr_1.value+"."+document.form_DHCP.IPaddr_2.value+"."+document.form_DHCP.IPaddr_3.value+"."+document.form_DHCP.IPaddr_4.value
+	// check duplicate MAC Address
+	if(inValidIPAddr(IP_Addr))
+	{
+		document.getElementById("MLG_DHCP_MAC_Err_Msg_3").style.display = "";
+		return;
+	}
+		
+	var IPAddress = new Array("192.168.1.102",
+		"192.168.1.101",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+		)
+	var MACAddress = new Array("AA:BB:CC:DD:0E:0E",
+		"AA:BB:CC:DD:12:12",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+		)
+
+        for(i=0;i<maxDhcpNum;i++){
+			var editIndex = document.form_DHCP.editNum.value;
+		  	if(IPAddress[i] == IP_Addr && i!= editIndex){
+				DuplicateIP = 1;
+				break;
+			}
+  			if(MACAddress[i] == MAC_Addr && i!= editIndex){
+				DuplicateIP = 1;
+				break;
+			}
+		}
+		
+		if(DuplicateIP == 1)
+		{
+			document.getElementById("MLG_DHCP_MAC_Err_Msg_2").style.display = "";
+			return;
+		}
+		var PoolStart = "192.168.1.2";
+		var TmpIP = Change2Hex(PoolStart);
+		var StaticIP = Change2Hex(IP_Addr);
+		if(parseInt(StaticIP, 16) < parseInt(TmpIP, 16))
+		{
+			document.getElementById('MLG_DHCP_Invalid_IPRange5').style.display = "";
+			return;
+		}
+		var PoolEnd = document.getElementById("Add_End_1").value + "." + document.getElementById("Add_End_2").value + "." + document.getElementById("Add_End_3").value + "." + document.getElementById("Add_End_4").value;
+		TmpIP = Change2Hex(PoolEnd);
+		if(parseInt(StaticIP, 16) > parseInt(TmpIP, 16))
+		{
+			document.getElementById('MLG_DHCP_Invalid_IPRange5').style.display = "";
+			return;
+		}
+	with (document.form_DHCP)
+	{
+		var data = {
+			emptyEntry: emptyEntry.value,
+			addFlag: 1,
+			editFlag: editFlag.value,
+			delnum: delnum.value,
+			editNum: editNum.value,
+			localNetWorkTabIndex: 1,
+			IpAddr: IP_Addr,
+			MACAddr: MAC_Addr,
+			HOSTNAME: Host_chosen.value
+		};			
+	}		
+	var url = document.form_DHCP.action;
+	var callback = function(responseData, textStatus) {
+		$('.loading').fadeOut(200);
+		$('.loading-icon').fadeOut(400);
+		parent.frames["menufrm"].MenuMaskclose();
+		window.location.href = "/cgi-bin/settings-local-network.cgi";
+	};
+	$('.loading').fadeIn(200);
+	$('.loading-icon').fadeIn(400);
+	parent.frames["menufrm"].MenuMaskopen();
+	$.post(url, data, callback, "html");
+
+}
+
+function clearErrMsg()
+{
+	document.getElementById("MLG_DHCP_MAC_Err_Msg_1").style.display = "none";
+	document.getElementById("MLG_DHCP_MAC_Err_Msg_2").style.display = "none";
+	document.getElementById("MLG_DHCP_MAC_Err_Msg_3").style.display = "none";
+	document.getElementById("MLG_DHCP_Invalid_IPRange1").style.display = "none";
+	document.getElementById("MLG_DHCP_Invalid_IPRange2").style.display = "none";
+	document.getElementById("MLG_DHCP_Invalid_IPRange3").style.display = "none";
+	document.getElementById("MLG_DHCP_Invalid_IPRange4").style.display = "none";
+	document.getElementById("MLG_DHCP_Invalid_IPRange5").style.display = "none";
+	document.getElementById("MLG_DHCP_Invalid_IPRange6").style.display = "none";
+	document.getElementById("MLG_DHCP_Invalid_IPRange7").style.display = "none";
+	document.getElementById("MLG_DHCP_Reserve_Err_Msg").style.display = "none";
+}
+
+function doIPcheck(object)
+{
+	var szAddr = object.value;
+	var len = szAddr.length;
+	var temp = szAddr.split("."); //split IPaddress into 4 parts
+	if(temp[0] == "" || temp[1] == "" || temp[2] == "" || temp[3] == "")
+	{
+		document.getElementById("MLG_DHCP_MAC_Err_Msg_3").style.display = "";
+		return -1;
+	}
+	else
+	{
+		if(temp[0] != document.getElementById("Add_Start_1").value || temp[1] != document.getElementById("Add_Start_2").value || temp[2] != document.getElementById("Add_Start_3").value)
+		{
+			document.getElementById("MLG_DHCP_MAC_Err_Msg_3").style.display = "";
+			return -1;
+		}
+	}
+	return 0;
+}
+function CheckDot(event, object)
+{
+	if(event.keyCode == 110 || event.keyCode == 190)
+	{	
+		if(object == "PrimaryDns_1")
+			document.form_DHCP.PrimaryDns_2.select();
+		else if(object == "PrimaryDns_2")
+			document.form_DHCP.PrimaryDns_3.select();
+		else if(object == "PrimaryDns_3")
+			document.form_DHCP.PrimaryDns_4.select();
+		else if(object == "SecondDns_1")
+			document.form_DHCP.SecondDns_2.select();	
+		else if(object == "SecondDns_2")
+			document.form_DHCP.SecondDns_3.select();	
+		else if(object == "SecondDns_3")
+			document.form_DHCP.SecondDns_4.select();	
+		else if(object == "routerIP_1")
+			document.form_DHCP.routerIP_2.select();	
+		else if(object == "routerIP_2")
+			document.form_DHCP.routerIP_3.select();	
+		else if(object == "routerIP_3")
+			document.form_DHCP.routerIP_4.select();	
+		else if(object == "LanMask_1")
+			document.form_DHCP.LanMask_2.select();	
+		else if(object == "LanMask_2")
+			document.form_DHCP.LanMask_3.select();	
+		else if(object == "LanMask_3")
+			document.form_DHCP.LanMask_4.select();	
+		else if(object == "Add_Start_1")
+			document.form_DHCP.Add_Start_2.select();	
+		else if(object == "Add_Start_2")
+			document.form_DHCP.Add_Start_3.select();	
+		else if(object == "Add_Start_3")
+			document.form_DHCP.Add_Start_4.select();	
+		else if(object == "Add_End_1")
+			document.form_DHCP.Add_End_2.select();	
+		else if(object == "Add_End_2")
+			document.form_DHCP.Add_End_3.select();	
+		else if(object == "Add_End_3")
+			document.form_DHCP.Add_End_4.select();	
+		else if(object == "IPaddr_1")
+			document.form_DHCP.IPaddr_2.select();	
+		else if(object == "IPaddr_2")
+			document.form_DHCP.IPaddr_3.select();	
+		else if(object == "IPaddr_3")
+			document.form_DHCP.IPaddr_4.select();	
+
+		if(document.all)    
+			window.event.returnValue = false;  
+		else  
+			event.preventDefault();  
+	}
+	else
+		return;
+}
+function CheckDHCPState()
+{
+	if(document.form_DHCP.dhcpTypeRadio[0].checked) //DHCP_enable
+	{			
+		document.getElementById("Add_Start_1").disabled = false;
+		document.getElementById("Add_Start_2").disabled = false;
+		document.getElementById("Add_Start_3").disabled = false;
+		document.getElementById("Add_Start_4").disabled = false;
+		
+		document.getElementById("Add_End_1").disabled = false;
+		document.getElementById("Add_End_2").disabled = false;
+		document.getElementById("Add_End_3").disabled = false;
+		document.getElementById("Add_End_4").disabled = false;	
+
+		document.form_DHCP.input_dns[0].disabled = false;
+		document.form_DHCP.input_dns[1].disabled = false;
+	
+		document.getElementById("PrimaryDns_1").disabled = false;
+		document.getElementById("PrimaryDns_2").disabled = false;
+		document.getElementById("PrimaryDns_3").disabled = false;
+		document.getElementById("PrimaryDns_4").disabled = false;	
+
+		document.getElementById("SecondDns_1").disabled = false;
+		document.getElementById("SecondDns_2").disabled = false;
+		document.getElementById("SecondDns_3").disabled = false;
+		document.getElementById("SecondDns_4").disabled = false;
+		
+		document.form_DHCP.dhcp_LeaseTime.disabled = false;
+	}
+	else
+	{		
+		document.getElementById("Add_Start_1").disabled = true;
+		document.getElementById("Add_Start_2").disabled = true;
+		document.getElementById("Add_Start_3").disabled = true;
+		document.getElementById("Add_Start_4").disabled = true;
+		
+		document.getElementById("Add_End_1").disabled = true;
+		document.getElementById("Add_End_2").disabled = true;
+		document.getElementById("Add_End_3").disabled = true;
+		document.getElementById("Add_End_4").disabled = true;	
+
+		document.form_DHCP.input_dns[0].disabled = true;
+		document.form_DHCP.input_dns[1].disabled = true;
+	
+		document.getElementById("PrimaryDns_1").disabled = true;
+		document.getElementById("PrimaryDns_2").disabled = true;
+		document.getElementById("PrimaryDns_3").disabled = true;
+		document.getElementById("PrimaryDns_4").disabled = true;	
+
+		document.getElementById("SecondDns_1").disabled = true;
+		document.getElementById("SecondDns_2").disabled = true;
+		document.getElementById("SecondDns_3").disabled = true;
+		document.getElementById("SecondDns_4").disabled = true;	
+		
+		document.form_DHCP.dhcp_LeaseTime.disabled = true;
+	}
+}
+</script><!--function only for DHCP-->
+
+				
+				<div id="tab-01" class="tab">
+				<form id="form_DHCP" name="form_DHCP" method="POST" action="/cgi-bin/settings-local-network.cgi" autocomplete="off">
+				<input type="HIDDEN" name="sessionKey" id="sessionKey" value=""> 
+				<input type="HIDDEN" name="DHCP_ApplyFlag" id="DHCP_ApplyFlag" value="">
+				<INPUT TYPE="HIDDEN" NAME="ETH" VALUE="0">
+				<INPUT TYPE="HIDDEN" NAME="DSL" VALUE="0">
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<INPUT TYPE="HIDDEN" NAME="PON" VALUE="0">
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<table class="setupWifiTable">
+						<thead>
+							<th colspan="2">DHCP</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="2"><span id='MLG_DHCP_Configure_text'>Configure como os IPs ser&atilde;o distribuidos automaticamente na sua rede.</span></td>
+							</tr>
+							<tr>
+								<td><span id='MLG_DHCP_Server_text'>Servidor DHCP:</span></td>
+								<td>
+									<input type="radio" name="dhcpTypeRadio" VALUE="1" checked onclick="CheckDHCPState()"/> <li id='MLG_DHCPConSerEnable_LANSetup'>Habilitado</li>  &nbsp;&nbsp; 
+									<input type="radio" name="dhcpTypeRadio" VALUE="0"  onclick="CheckDHCPState()"/> <li id='MLG_DHCPConSerDisable_LANSetup'>Desabilitado</li> 
+								</td>
+							</tr>
+							<tr>
+								<td><span id='MLG_DHCP_Router_IP'>Endere&ccedil;o IP do Roteador: </span></td>
+								<td>
+									<input type="text" name="routerIP_1" class="router" maxlength="3" id="routerIP_1" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="routerIP_2" class="router" maxlength="3" id="routerIP_2" VALUE="" onkeydown="CheckDot(event, this.id)"/> .  
+									<input type="text" name="routerIP_3" class="router" maxlength="3" id="routerIP_3" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="routerIP_4" class="router" maxlength="3" id="routerIP_4" VALUE="" onkeydown="CheckDot(event, this.id)"/>
+								</td>
+							</tr>
+							<tr>
+								<td><span id='MLG_DHCP_Mask'>M&aacute;scara de Rede:</span></td>
+								<td>
+									<input type="text" name="LanMask_1" class="router" maxlength="3" id="LanMask_1" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="LanMask_2" class="router" maxlength="3" id="LanMask_2" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="LanMask_3" class="router" maxlength="3" id="LanMask_3" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="LanMask_4" class="router" maxlength="3" id="LanMask_4" VALUE="" onkeydown="CheckDot(event, this.id)"/>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="2"><span id='MLG_DHCP_Address_Range'>Faixa de Endere&ccedil;amento:</span></td>
+								<td>
+									<input type="text" name="Add_Start_1" class="router" maxlength="3" id="Add_Start_1" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="Add_Start_2" class="router" maxlength="3" id="Add_Start_2" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="Add_Start_3" class="router" maxlength="3" id="Add_Start_3" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="Add_Start_4" class="router" maxlength="3" id="Add_Start_4" VALUE="" onkeydown="CheckDot(event, this.id)"/>
+									<span style="display:none" class="vmsg error" id='MLG_DHCP_Invalid_IPRange1' >Start IP DHCP deve estar na mesma sub-rede com gateway IP!</span>
+									<span style="display:none" class="vmsg error" id='MLG_DHCP_Invalid_IPRange4' >DHCP Pool range nao pode conter o endereco IP.</span>
+									<span style="display:none" class="vmsg error" id='MLG_DHCP_Invalid_IPRange6' >Start IP DHCP e Router IP n&atilde;o est&atilde;o autorizados a ser o mesmo.</span>
+								</td>
+							</tr>
+							<tr>
+								<td class="second">
+									<input type="text" name="Add_End_1" class="router" maxlength="3" id="Add_End_1" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="Add_End_2" class="router" maxlength="3" id="Add_End_2" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="Add_End_3" class="router" maxlength="3" id="Add_End_3" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="Add_End_4" class="router" maxlength="3" id="Add_End_4" VALUE="" onkeydown="CheckDot(event, this.id)"/>
+									<span style="display:none" class="vmsg error" id='MLG_DHCP_Invalid_IPRange2' >DHCP End IP deve estar na mesma sub-rede com gateway IP!</span>
+									<span style="display:none" class="vmsg error" id='MLG_DHCP_Invalid_IPRange3' >Por favor insira um endere&ccedil;o IP final maior que o endere&ccedil;o IP inicial.</span>
+									<span style="display:none" class="vmsg error" id='MLG_DHCP_Invalid_IPRange7' >End IP DHCP e Router IP n&atilde;o est&atilde;o autorizados a ser o mesmo.</span>
+								</td>
+							</tr>
+							<tr id="tr_dns">
+							<td><span id='MLG_DHCP_DNS_Server'>Servidor DNS Espec&iacute;fico:</span></td>
+							<td>
+								<input type="radio" name="input_dns" id="input_dns" VALUE="1"  onChange="UpdateDNSState()"/> <li id='MLG_DHCP_DNSEnable'>Habilitado</li>  &nbsp;&nbsp; 
+								<input type="radio" name="input_dns" id="input_dns" VALUE="0" checked onChange="UpdateDNSState()"/> <li id='MLG_DHCP_DNSDisable'>Desabilitado</li> 
+							</td>
+						</tr>
+						<tr id="tr_custom_dns_primary">
+								<td ><span id='MLG_DHCP_Primary_DNS'>Servidor DNS Prim&aacute;rio: </span></td>
+								<td>
+									<input type="text" name="PrimaryDns_1" class="router" maxlength="3" id="PrimaryDns_1" VALUE="" onkeydown="CheckDot(event, this.id)" /> . 
+									<input type="text" name="PrimaryDns_2" class="router" maxlength="3" id="PrimaryDns_2" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="PrimaryDns_3" class="router" maxlength="3" id="PrimaryDns_3" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="PrimaryDns_4" class="router" maxlength="3" id="PrimaryDns_4" VALUE="" onkeydown="CheckDot(event, this.id)"/>
+								</td>
+						</tr>
+						<tr id="tr_custom_dns_secondary">
+								<td ><span id='MLG_DHCP_Secondary_DNS'>Servidor DNS Secund&aacute;rio:</span></td>
+								<td>
+									<input type="text" name="SecondDns_1" class="router" maxlength="3" id="SecondDns_1" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="SecondDns_2" class="router" maxlength="3" id="SecondDns_2" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="SecondDns_3" class="router" maxlength="3" id="SecondDns_3" VALUE="" onkeydown="CheckDot(event, this.id)"/> . 
+									<input type="text" name="SecondDns_4" class="router" maxlength="3" id="SecondDns_4" VALUE="" onkeydown="CheckDot(event, this.id)"/>
+								</td>
+						</tr>
+							<tr>
+								<td><span id='MLG_DHCP_Lease_Time'>Per&iacute;odo de Concess&atilde;o:</span></td>
+								<td><input type="text" name="dhcp_LeaseTime" class="router2" maxlength="9" id="dhcp_LeaseTime" VALUE=""/><li id='MLG_DHCP_Lease_Time_Minutes'>Minutos</li></td>
+							</tr>
+							<tr>
+								<td class="red"><span style="display:none" class="vmsg error" id='MLG_DHCP_Warn' >Por favor, complete todos os campos antes de salvar.</span>
+								<span style="display:none" class="vmsg error" id='MLG_DHCP_Invalid' >Por favor, insira um endere&ccedil;o IP v&aacute;lido.</span>
+								<span style="display:none" class="vmsg error" id='MLG_DHCP_Invalid_LeaseTime' >Por favor, insira um tempo de concess&atilde;o v&aacute;lido</span></td>
+								<td colspan="3" class="cinza">
+									<a href="#" class="btn-default-orange-small right"><span id = 'MLG_Dhcp_Cancel'>Cancelar</span></a>
+									<a href="#" class="btn-default-orange-small right"><span id = 'MLG_Dhcp_Save'>Salvar</span></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>				
+					
+					<table class="setupWifiTable">
+						<thead>
+							<tr>
+								<th colspan="3"><span id="MLG_DHCP_TABLE_TITLE_2">Criar Reserva no DHCP</span></th>
+							</tr>
+							<tr>
+								<th><span id="MLG_DHCP_Hostname">Hostname</span></th>
+								<th><span id="MLG_DHCP_MAC_Address">Endere&ccedil;o MAC</span></th>
+								<th><span id="MLG_DHCP_IP_Address">Endere&ccedil;o IP</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="reservation_selectindex">
+								</td>
+								<td style="display: none;" >
+									<input name="Host_chosen" type="text" class="invalid" id="Host_chosen">
+								</td>
+								<td><input name="MAC_chosen" type="text" id="MAC_chosen" maxlength="17">
+									<span  style="display:none" class="vmsg error" id="MLG_DHCP_MAC_Err_Msg_1">Por favor, informe um endere&ccedil;o MAC v&aacute;lido.</span>
+									<span  style="display:none" class="vmsg error" id="MLG_DHCP_MAC_Err_Msg_2">Endere&ccedil;o MAC ou IP j&aacute; reservado.</span>
+								</td>
+								<td>
+									<input name="IPaddr_1" id="IPaddr_1" class="router" maxlength="3" onkeydown="CheckDot(event, this.id)"/> .
+									<input name="IPaddr_2" id="IPaddr_2" class="router" maxlength="3" onkeydown="CheckDot(event, this.id)"/> . 
+									<input name="IPaddr_3" id="IPaddr_3" class="router" maxlength="3" onkeydown="CheckDot(event, this.id)"/> . 
+									<input name="IPaddr_4" id="IPaddr_4" class="router" maxlength="3" onkeydown="CheckDot(event, this.id)"/>
+									<span  style="display:none" class="vmsg error" id="MLG_DHCP_MAC_Err_Msg_3">Por favor, insira um endere&ccedil;o IP v&aacute;lido.</span>
+									<span  style="display:none" class="vmsg error" id="MLG_DHCP_Invalid_IPRange5">DHCP IP est&aacute;tico est&aacute; fora do intervalo pool DHCP.</span>
+								</td>
+						
+							</tr>
+							<tr>
+								<td colspan="3">
+								<a href="#" class="btn-default-orange-small right"><span id="MLG_DHCP_Reserve" >Reservar</span></a>
+								<span  style="display:none" class="vmsg error" id="MLG_DHCP_Reserve_Err_Msg">A tabela de reserva DHCP est&aacute; cheia</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					
+					<table class="setupWifiTable"  >
+					<thead>
+							<tr>
+								<th colspan="4"><span id='MLG_DHCP_Reservation_List'>Tabela de IPs Reservados</span></th>
+							</tr>
+							<tr>
+								<th><span id='MLG_DHCP_Hostname2'>Hostname</span></th>
+								<th><span id='MLG_DHCP_MAC_Address2'>Endere&ccedil;o MAC</span></th>
+								<th><span id='MLG_DHCP_IP_Address2'>Endere&ccedil;o IP</span></th>
+								<th><span id='MLG_DHCP_Modify_Remove'>Modificar / Remover</span></th>
+							</tr>
+					</thead>
+						<tbody id="dhcp_static_list">
+						</tbody>
+					</table>
+					
+					<table class="setupWifiTable">
+					<thead>
+							<tr>
+								<th colspan="4"><span id='MLG_DHCP_Lease_Table'>Tabela de Concess&atilde;o</span></th>
+							</tr>
+							<tr>
+								<th><span id='MLG_DHCP_Hostname3'>Hostname</span></th>
+								<th><span id='MLG_DHCP_MAC_Address3'>Endere&ccedil;o MAC</span></th>
+								<th><span id='MLG_DHCP_IP_Address3'>Endere&ccedil;o IP</span></th>
+								<th><span id='MLG_DHCP_TIME_REMAINING'>Tempo Restante</span></th>
+							</tr>
+					</thead>
+						<tbody id="dhcpClientList">
+						</tbody> 	
+					</table>					
+					<input type="HIDDEN" name="editMAC" id="editMAC" value="1">
+					<INPUT TYPE="HIDDEN" NAME="addFlag" id="addFlag" VALUE=""> 
+					<INPUT TYPE="HIDDEN" NAME="editFlag" id="editFlag" VALUE=""> 
+					<INPUT TYPE="HIDDEN" NAME="delnum" id="delnum" VALUE="NULL"> 
+					<INPUT TYPE="HIDDEN" NAME="editNum" id="editNum" VALUE="NULL"> 
+					<INPUT type="HIDDEN" name="emptyEntry" value="2">	
+				</form>
+				</div><!--tab-01-->
+
+				<FORM id="PortForwarding_Form_ID" action="/cgi-bin/settings-local-network.cgi" name="PortForwarding_Form" method="POST" autocomplete="off">
+				<div id="tab-02" class="tab">
+					<table class="setupWifiTable">
+						<thead>
+							<th colspan="4"><span id="MLG_PortForwarding_Title_2">Redirecionar Portas</span></th>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="4"><span id="MLG_PortForwarding_Description">Configure como as portas do seu Vivo box podem ser redirecionadas para os seus dispositivos.</span></td>
+							</tr>
+							<tr>
+								<td><span id="MLG_PortForwarding_RuleName">Nome da Regra:</span></td>
+								<td><input type="text" name="RuleName" id="RuleName_ID" maxlength="20"/></td>
+								<td><strong><span id="MLG_PortForwarding_Protocol_Colon">Protocolo:</span></strong></td>
+								<td><select id='PortRule_Protocol_ID' name="PortRule_Protocol">
+								<option value="TCP" >TCP</option>
+								<option value="UDP" >UDP</option>
+								<option value="ALL" >TCP / UDP</option>
+								</select></td>
+							</tr>
+							<tr>
+								<td><span id="MLG_PortForwarding_SourcePort">Porta Externa:</span><span class='description' id="MLG_PortForwarding_SourcePortDescript">Porta indiv&iacute;dual ou faixa,<br> Ex. 8080:9090</span></td>
+								<td><input type="text" name="SourcPort" id="SourcPort_ID" maxlength="11" value="" /></td>
+								<td><strong><span id="MLG_PortForwarding_DestPort">Porta Interna:</span><span class='description' id="MLG_PortForwarding_DestPortDescript">Opcional, caso informe <br> faixa na externa.</span></strong></td>
+								<td><input type="text" name="DestPort" id="DestPort_ID" maxlength="5" value="" /></td>
+							</tr>
+							<tr>
+								<td><span id="MLG_PortForwarding_SourceIP">IP Externo:</span><span class='description' id="MLG_PortForwarding_SourceIP_Any_Descript">Para qualquer IP, deixar o campo em branco.</span></td>
+								<td><input type="text" name="SourceIP" id="SourceIP_ID" maxlength="15"/></td>
+								<td><strong><span id="MLG_PortForwarding_DestIP">IP Interno:</span></strong></td>
+								<td><input type="text" name="DestIP" id="DestIP_ID" maxlength="15" onchange="FindMacAddress(this.value)"/></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td>
+									<strong>
+										<span id="MLG_PortForwarding_IP_Reserve">IP reserve:</span>
+									</strong>
+								</td>
+								<td>
+									<span id="PortForwarding_MAC_Address" style="display:none"></span>
+									<input type="checkbox" id="IP_reserve" name="IP_reserve" value="0" disabled>
+									<span style="display:none" class="vmsg error" id="MLG_PortForward_Err_Msg_1">Didn't find any match MAC Address. </span>
+									<span style="display:none" class="vmsg error" id="MLG_PortForward_Err_Msg_2">The IP had already reserve a MAC Address.</span>
+								</td>
+							</tr>
+							<!--<tr>
+								<td colspan="4" class="red"><strong>Invalid hostname or IP address</strong></td>
+							</tr>-->
+							<tr>
+								<td colspan="4">
+									<a onClick="btnPortForwardClear()" href="#" class="btn-default-orange-small right"><span id="MLG_PortForwarding_Clear">Apagar</span></a>
+									<a onClick="btnPortForwardAdd()" href="#" class="btn-default-orange-small right"><span id="MLG_PortForwarding_Add">Adicionar</span></a>
+								</td>
+							</tr>
+							</tr>
+						</tbody>
+					</table>
+					<div id="portForwarding_rule_list">				
+					</div>				
+				</div><!--tab-02-->
+				<span style="display:none" id='MLG_PortForwarding_All'>Todos</span>
+				<span style="display:none" id='MLG_PortForwarding_CWMP_Error'>A porta &eacute; usada para CWMP!</span>
+				<span style="display:none" id='MLG_RuleNameFormatError_JS'>Nome da regra inv&#225;lido</span>
+				<span style="display:none" id='MLG_PortForwarding_SourceIP_Error'>Endere&#231;o de IP de origem inv&#225;lido:</span>
+				<span style="display:none" id='MLG_PortForwarding_DestIP_Error'>Endere&#231;o de IP do destino inv&#225;lido:</span>
+				<span style="display:none" id='MLG_PortForwarding_DestIP_Empty'>Endere&#231;o de IP do destino n&#227;o deve estar vazio.</span>
+				<span style="display:none" id='MLG_PortForwarding_SourcePort_Error'>Porta de origem inv&#225;lida:</span>
+				<span style="display:none" id='MLG_PortForwarding_DestPort_Error'>Porta do destino inv&#225;lida:</span>
+				<span style="display:none" id='MLG_PortForwarding_SourcePort_Empty'>Porta de origem n&#227;o deve estar vazio.</span>
+				<span style="display:none" id='MLG_PortForwarding_DestPort_Empty'>Porta do destino n&#227;o deve estar vazio.</span>
+				<span style="display:none" id='MLG_RuleIndex_Empty'>n&#227;o tem &#237;ndice de regra.</span>
+				<span style="display:none" id='MLG_RuleAdslIndex_Empty'>n&#227;o tem &#237;ndice de regra adsl.</span>
+				<input type="hidden" name="PorForwardAddFlag" value="0">
+				<input type="hidden" name="PorForwardDelFlag" value="0">
+				<input type="hidden" name="ruleIndexVdsl" id="ruleIndexVdsl" value="0">
+				<input type="hidden" name="ruleIndexAdsl" id="ruleIndexAdsl" value="0">
+				<input type="hidden" name="sessionKey" id="sessionKey" value="">
+				<input type="hidden" name="startSrcPort" id="startSrcPort" value="0">
+				<input type="hidden" name="endSrcPort" id="endSrcPort" value="0">
+				<input type="hidden" name="startDestPort" id="startDestPort" value="0">
+				<input type="hidden" name="endDestPort" id="endDestPort" value="0">
+				</FORM>
+
+				<FORM id="dmz" action="/cgi-bin/settings-local-network.cgi" name="dmz" method="POST" autocomplete="off">
+				<div id="tab-03" class="tab">
+					<table class="setupWifiTable">
+						<thead>
+							<th colspan="2">DMZ</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="2"><span id="MLG_GVTSettings_DMZ_explain">Permita que um dispositivo da rede local seja acess&iacute;vel da Internet.</span></td>
+							</tr>
+							<tr>
+								<td><span id="MLG_GVTSettings_DMZ_state">Estado do DMZ:</span></td>
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+								<td>
+									<INPUT TYPE="radio" NAME="dmzState" VALUE="1"  ><li id="MLG_GVTSettings_DMZ_enable">Habilitado</li> &nbsp; &nbsp;
+									<INPUT TYPE="radio" NAME="dmzState" VALUE="2" checked ><li id="MLG_GVTSettings_DMZ_disable">Desabilitado</li>
+								</td>
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+							</tr>
+							<tr>
+								<td><span id="MLG_GVTSettings_DMZ_ipaddr">Endere&ccedil;o IP:</span></td>
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+								<td><input type="text" name="dmzHostIP" VALUE="0.0.0.0"  id="dmzHostIP" maxlength="15"/></td>	
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+							</tr>
+							<tr>
+								<td colspan="2">
+									<a href="#" class="btn-default-orange-small right" value="Can_cel" ><span id="Cancel_dmz">Cancelar</span></a>
+									<a href="popup-dmz-reboot.cgi" id="btn-clicktocall" data-fancybox-type="iframe" class="btn-default-orange-small right" value="Sa_ve" ><span id="Save_dmz">Salvar</span></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!--tab-03-->
+				<INPUT TYPE="HIDDEN" NAME="dmzFlag" VALUE="0">
+				<INPUT TYPE="HIDDEN" NAME="dmz_active" VALUE="No">
+				<input type="HIDDEN" name="sessionKey" id="sessionKey" value="">
+				<span style="display:none" id='MLG_GVTSettings_DMZ_explain'>Permita que um dispositivo da rede local seja acess&iacute;vel da Internet.</span>
+				<span style="display:none" id='MLG_GVTSettings_DMZ_state'>Estado do DMZ:</span>
+				<span style="display:none" id='MLG_GVTSettings_DMZ_ipaddr'>Endere&ccedil;o IP:</span>
+				<span style="display:none" id='MLG_GVTSettings_DMZ_enable'>Habilitado</span>
+				<span style="display:none" id='MLG_GVTSettings_DMZ_disable'>Desabilitado</span>
+				<span style="display:none" id='IP_Format_Error'>Error de formato de IP</span>
+				<span style="display:none" id='Save_dmz'>Salvar</span>
+				<span style="display:none" id='Cancel_dmz'>Cancelar</span>
+				</FORM>
+				
+				<div id="tab-04" class="tab">
+				<form action="/cgi-bin/settings-local-network.cgi" method="POST" name="UPnP_form" id="UPnP_form" autocomplete="off">
+					<table class="setupWifiTable">
+						<thead>
+							<th colspan="4"><span id="MLG_UPnP_UPnP_Text">UPNP</span></th>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="4">
+									<span id="MLG_UPnP_Title_String">Permita que dispositivos com suporte a UPnP se comuniquem com outros dispositivos de sua rede.</span>
+								</td>
+							</tr>
+							<tr>
+								<td><span id="MLG_UPnP_UPnPState">Estado do UPNP:</span></td>
+								<td>
+							      <INPUT TYPE="RADIO" NAME="enblUpnp" VALUE="Yes" onClick=upnpEnblCheck() checked >        
+							      <li id="MLG_UPnP_Enable">Habilitado</li>
+							      <INPUT TYPE="RADIO" NAME="enblUpnp" VALUE="No" onClick=upnpEnblCheck()  >
+							      <li id="MLG_UPnP_Disable">Desabilitado</li>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4">
+									<a href="#" class="btn-default-orange-small right"><span id="MLG_UPnP_Cancel">Cancelar</span></a>
+									<a  onClick="btnUpnpApplySave()" href="#" class="btn-default-orange-small right"><span id="MLG_UPnP_Save">Salvar</span></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<INPUT NAME="UPnP_auto" TYPE="HIDDEN" VALUE="1">
+					<input type="hidden" name="upnpsaveFlag" value="0">
+					<input type="HIDDEN" name="sessionKey" id="sessionKey" value="">
+				</form>
+				</div><!--tab-04-->
+<script>
+function invalidCharCheck(object)
+{
+	var inputStr = object.value;
+	var i;
+	for(i = 0; i < inputStr.length; i++)
+	{
+		var c = object.value.charAt(i);
+		if(inputStr.charCodeAt(i) < 0 || inputStr.charCodeAt(i) > 255)
+		{
+			return;
+		}
+	 	if (c == '"' || c == ':' || c == '&' || c == '\'' || c == '(' || c== ')' || c==';' || c=='`' || c =='|' || c=='\\' || c==' ' || c=='%')
+		{		 								
+			return;
+		}
+		
+	} 
+	return true;
+}
+
+</script><!--function only for DDNS-->	
+
+				<form id="RN_DDNSform" name="RN_DDNSform" action="/cgi-bin/settings-local-network.cgi" method="POST" autocomplete="off">
+				<div id="tab-05" class="tab">
+					<table class="setupWifiTable">
+						<thead>
+							<th colspan="2">DDNS</th>
+						</thead>
+						<tbody>
+						    	<tr>
+								<td colspan="4"><span id='MLG_DDNS_Explain'>Configure uma conta de servidor DNS Din&acirc;mico para apontar para o seu Vivo box automaticamente.</span>
+								</td>
+							</tr>
+							<tr>
+								<td><span id='MLG_ActiveDynamicDNS'>DDNS</span></td>
+								<td>
+									<input name="DDNSRadio" type="radio" value="1" ><li id="MLG_DDNS_Enable" >Habilitado</li> 
+									<input name="DDNSRadio" type="radio" value="0" checked><li id="MLG_DDNS_Disable" >Desabilitado</li>
+								</td>
+							</tr>
+							<tr>
+								<td><span id='MLG_ServiceProvider_DNS'>Provedor</span></td>
+								<td><select name="SERVICE_provider" id="SERVICE_provider" size="1">
+								<option value="www.dyndns.org" selected>DynDNS</option>
+								<option value="www.no-ip.com" >No-IP</option>
+								<option value="members.easydns.com" >EasyDNS</option>
+								<option value="www.dtdns.com" >DtDNS</option>
+								</select></td>
+							</tr>
+							<tr>
+								<td><span id='MLG_Username_DDNS'>Usu&aacute;rio:</span></td>
+								<td><input type="text" class="" name="sysDDNSUser" id="sysDDNSUser" value="" /><span style="display:none" class="vmsg error" id="MLG_DDNS_UserName_Err_Msg">Por falor, insira um nome de usu&aacute;rio v&aacute;lido.</span></td>
+							</tr>
+							<tr>
+								<td><span id='MLG_Password_DDNS'>Senha:</span></td>
+								<td><input type="password" autocomplete="new-password" class="" name="sysDDNSPassword" id="sysDDNSPassword" value="" /><span style="display:none" class="vmsg error" id="MLG_DDNS_Password_Err_Msg">Por favor, Informe uma senha v&aacute;lida.</span></td>
+							</tr>
+							<tr>
+								<td><span id='MLG_HostName_ConnectionStatus'>Hostname:</span></td>
+								<td><input type="text" class="" name="sysDDNSHost" id="sysDDNSHost" value="" /><span style="display:none" class="vmsg error" id="MLG_DDNS_Hostname_Err_Msg">Por favor, insira um hostname v&aacute;lido.</span></td>
+							</tr>
+							<tr>
+						
+								<td colspan="4">
+									<a href="#" class="btn-default-orange-small right"><span id="MLG_DDNS_Account_Cancel">Cancelar</span></a>
+									<a href="#" class="btn-default-orange-small right"><span id="MLG_DDNS_Account_Save">Salvar</span></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<li style="display:none">
+	  				<span id="Chinese_Check"></span>
+					<span id="DDNS_Empty_Error">Tanto nome de usu&aacute;rio e senha s&atilde;o necess&aacute;rios!</span>
+					</li>
+					<input type="HIDDEN" name="sessionKey" id="sessionKey" value="">
+					<input type="HIDDEN" name="SaveBtn" id="SaveBtn" value="">
+					<input type="HIDDEN" name="Enable_DyDNS" id="Enable_DyDNS" value="">
+				</form>	
+				</div><!--tab-05-->
+					
+			<!--/div--><!--col-722-->
+		
+			<div class="clear"></div>
+			
+			<p>&nbsp;</p>
+			
+		</div><!--conteudo-->
+		
+		<div class="clear"></div>
+		
+	</div><!--wrap-->	
+</div><!--content-->
+<div class="loading">
+</div>
+<div class="loading-icon">
+</div>
+</body>
+	

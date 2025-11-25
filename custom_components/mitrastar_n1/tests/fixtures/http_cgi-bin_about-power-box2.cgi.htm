@@ -1,0 +1,276 @@
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<meta name="robots" content="noindex">
+		<title>VIVO</title>
+
+
+		<link rel="stylesheet" type="text/css" href="/html/assets/_css/gateway_sophia.css"/>
+
+
+
+		<link rel="stylesheet" type="text/css" href="/html/assets/_js/fancybox/jquery.fancybox.css" />
+		<script type="text/javascript" src="/html/assets/_js/jquery-1.6.3.min.js"></script>
+		<script type="text/javascript" src="/html/assets/_js/fancybox/jquery.fancybox.pack.js"></script>
+		<script type="text/javascript" src="/html/assets/_language/Multi_Language_sophia.js"></script>
+		<script type="text/javascript" src="/html/assets/_js/jquery.cookie.js"></script>
+	</head>
+
+
+
+	<style>
+            li.led {
+                border-bottom: 1px solid rgba(255, 255, 255, .4);
+                -webkit-background-clip: padding-box; /* for Safari */
+                background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+                margin-top:7px;
+            }   
+            
+            svg.led{
+                margin-right: 10px;
+                width: 10px;
+                height: 10px;
+                display: none;
+            }
+            
+	</style>
+
+
+
+
+	<script>
+	var Language = $.cookie("CurrentLang");
+	var language_Index = get_language_index(Language);	
+$(document).ready(function () {
+
+	$('#accordion a.item').click(function () {
+		$('#accordion li').children('ul').slideUp('fast');	
+		$("#accordion a").removeClass("active");
+		$(this).addClass("active");
+		$(this).siblings('ul').slideDown('fast');	
+		Multi_Language();
+		return false;
+	});
+});
+
+function Multi_Language()
+{
+  //var Language="<%tcWebApi_get("GUI_Entry1","Language","s")%>";
+
+
+  document.getElementById("MLG_LED_TITLE").innerHTML = MLG_LED_TITLE[language_Index];
+  document.getElementById("MLG_LED_DESCRIPTION_TITLE").innerHTML = MLG_LED_DESCRIPTION_TITLE[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_th1").innerHTML = MLG_VIVOAbout_APC_str_th1[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a1").innerHTML = MLG_VIVOAbout_APB_LED_Status_a1[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a1_2").innerHTML = MLG_VIVOAbout_APB_LED_Status_a1_2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a1_3").innerHTML = MLG_VIVOAbout_APB_LED_Status_a1_3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a1_4").innerHTML = MLG_VIVOAbout_APB_LED_Status_a1_4[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a2").innerHTML = MLG_VIVOAbout_APB_LED_Status_a2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a3").innerHTML = MLG_VIVOAbout_APB_LED_Status_a3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a2_2").innerHTML = MLG_VIVOAbout_APB_LED_Status_a2_2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a2_3").innerHTML = MLG_VIVOAbout_APB_LED_Status_a2_3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a3_2").innerHTML = MLG_VIVOAbout_APB_LED_Status_a3_2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a4").innerHTML = MLG_VIVOAbout_APB_LED_Status_a4[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a4_2").innerHTML = MLG_VIVOAbout_APB_LED_Status_a4_2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a6").innerHTML = MLG_VIVOAbout_APB_LED_Status_a6[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a7").innerHTML = MLG_VIVOAbout_APB_LED_Status_a7[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a8").innerHTML = MLG_VIVOAbout_APB_LED_Status_a8[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status_a9").innerHTML = MLG_VIVOAbout_APB_LED_Status_a9[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_a1").innerHTML = MLG_VIVOAbout_APC_str_a1[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_a2").innerHTML = MLG_VIVOAbout_APC_str_a2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_a3").innerHTML = MLG_VIVOAbout_APC_str_a3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_a4").innerHTML = MLG_VIVOAbout_APC_str_a4[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_a5").innerHTML = MLG_VIVOAbout_APC_str_a3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_a6").innerHTML = MLG_VIVOAbout_APC_str_a4[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status3").innerHTML = MLG_VIVOAbout_APB_LED_Status3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status3_2").innerHTML = MLG_VIVOAbout_APB_LED_Status3_2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status6").innerHTML = MLG_VIVOAbout_APB_LED_Status6[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status6_2").innerHTML = MLG_VIVOAbout_APB_LED_Status6_2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status6_3").innerHTML = MLG_VIVOAbout_APB_LED_Status6_3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_LED_Status6_4").innerHTML = MLG_VIVOAbout_APB_LED_Status6_4[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_b1").innerHTML = MLG_VIVOAbout_APC_str_b1[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_b2").innerHTML = MLG_VIVOAbout_APC_str_b2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_b3").innerHTML = MLG_VIVOAbout_APC_str_b3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_b1_2").innerHTML = MLG_VIVOAbout_APC_str_b1_2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_b2_2").innerHTML = MLG_VIVOAbout_APC_str_b2_2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_b3_2").innerHTML = MLG_VIVOAbout_APC_str_b3_2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_c1").innerHTML = MLG_VIVOAbout_APC_str_c1[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_c2").innerHTML = MLG_VIVOAbout_APC_str_c2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_c3").innerHTML = MLG_VIVOAbout_APC_str_c3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_c4").innerHTML = MLG_VIVOAbout_APC_str_c4[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_c5").innerHTML = MLG_VIVOAbout_APC_str_c5[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_c6").innerHTML = MLG_VIVOAbout_APC_str_c6[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_c7").innerHTML = MLG_VIVOAbout_APC_str_c7[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_d1").innerHTML = MLG_VIVOAbout_APC_str_d1[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_d2").innerHTML = MLG_VIVOAbout_APC_str_d2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_Title4").innerHTML = MLG_VIVOAbout_APB_Title4[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_Title5").innerHTML = MLG_VIVOAbout_APB_Title5[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_Button1").innerHTML = MLG_VIVOAbout_APB_Button1[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_Button2").innerHTML = MLG_VIVOAbout_APB_Button2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_str_d2").innerHTML = MLG_VIVOAbout_APB_str_d2[language_Index];
+  document.getElementById("MLG_VIVOAbout_APB_str_d3").innerHTML = MLG_VIVOAbout_APB_str_d3[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_e1").innerHTML = MLG_VIVOAbout_APC_str_e1[language_Index];
+  document.getElementById("MLG_VIVOAbout_APC_str_th2").innerHTML = MLG_VIVOAbout_APC_str_th2[language_Index];
+}
+
+		
+		//$('li.led').hover(
+        //          function() { $( this ).find( "svg" ).show();},
+        //          function() { $( this ).find( "svg" ).hide(); }
+        //        );
+
+	</script>	
+
+
+
+	<body>
+		
+			<div class="wrap">
+				<div id="conteudo-gateway">
+					
+						<h3 class="azul-2 text-up"><span id='MLG_PAGE_TITLE'>SOBRE O Vivo Box</span></h3>			
+							<table class="gatewayTable" id="table_model" cellpadding="0" cellspacing="0">
+								<thead>
+									<tr>
+										<th colspan="4" class="firstChild"><span id='MLG_DEVICE_TITLE'>
+										Informa&ccedil;&otilde;es do Dispositivo</span></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="even">
+										<td class="firstChild">
+										<strong><span id='MLG_Vendor'>Fabricante: </span></strong>
+										</td><td>MitraStar</td>
+										<td class="firstChild"><strong><span id='MLG_Model'>Modelo : 
+										</span></strong></td><td>GPT-2741GNAC-N1</td>
+									</tr>    
+									<tr class="even">
+										<td class="firstChild"><strong><span id='MLG_SW_Version'>Vers&atilde;o do Software:
+										</span></strong></td><td>BR_g8.7_1.11(WVK.0)b45</td>
+										<td class="firstChild"><strong><span id='MLG_HW_Version'>Vers&atilde;o do Hardware:
+										</span></strong></td><td>tmp_hardware1.0</td>
+									</tr>
+									<tr class="even">
+										<td class="firstChild"><strong><span id='MLG_Serial_Number'>
+										N&uacute;mero de S&eacute;rie:</span></strong></td><td>d8c6789da2b0</td>
+										<td class="firstChild"><strong><span id='MLG_GPON_Serial_Number'>
+										GPON N&uacute;mero de S&eacute;rie:</span></strong></td><td>MSTC09D6C9A9</td>
+									</tr>
+									</tr>  
+									<tr class="even">
+										<td class="firstChild"><strong><span id='MLG_WAN_MAC_Address'>
+										Endere&ccedil;o MAC da WAN:</span></strong></td><td>AA:BB:CC:DD:01:01</td>
+										<td class="firstChild"><strong><span id='MLG_LAN_MAC_Address'>
+										Endere&ccedil;o MAC da LAN:</span></strong></td><td>AA:BB:CC:DD:01:01</td>
+									</tr>
+								</tbody>	
+							</table>
+								
+							<div class="clear"></div>
+
+							<br>
+
+							<img src="/html/assets/_images/gateway_sophia/hgu.jpg" alt="Vivo Box" class="left" width="710">
+
+
+
+				
+							<br>
+							<br>
+							<div class="clear"></div>
+				
+							<table class="gatewayTable" cellpadding="0" cellspacing="0" style="width:690px;">
+								<thead>
+									<tr>
+										<th style="width:190px;"><span id='MLG_LED_TITLE'>LED</span></th>
+										<th class="lastChild" style="width:590px;"><span id='MLG_LED_DESCRIPTION_TITLE'>
+										O QUE AS LUZES SIGNIFICAM?</span></th>
+									</tr>
+								</thead>
+							
+								<tbody>
+									<tr class="even">
+
+										<td><img src="/html/assets/_images/gateway_sophia/icon-phone_vivo.png" alt="Phone" /><br><span id='MLG_LED_Telephone'></span>Telefone</td>					
+										<td>
+											<ul>
+												<li><strong><span id='MLG_LED_Telephone_CONTENT'></span></strong><ul><li class="led"><strong>Fixo Azul:</strong> A linha esta registrada, voc&ecirc; est&aacute; apto a receber e efetuar liga&ccedil;&otilde;es.</li><li class="led"><strong>Piscando Azul:</strong> O telefone est&aacute; fora do gancho ou chamada em andamento.</li><li class="led"><strong>Piscando Azul Rapidamente:</strong> Mensagem n&atilde;o lida na caixa postal.</li><li class="led"><strong>Piscando Azul Rapidamente 3 vezes:</strong> Conta configurada, mas sem IP na interface VoIP.</li><li class="led"><strong>Piscando Vermelho:</strong> Conta configurada, mas n&#227;o registrada.</li><li class="led lastChild"><strong>Desligado:</strong>  A linha n&#227;o est&#225; configurada.</li></ul></li>
+											</ul>	
+										</td>
+
+									</tr>    
+									<tr class="odd">
+										<td><img src="/html/assets/_images/gateway_sophia/wifi-locked2_vivo.png" alt="REDE WI-FI"/><br>Wi-Fi 2.4 GHz</td>
+										<td>
+											<ul>
+												<li><strong><span id='MLG_LED_WIFI_CONTENT'></span></strong><ul><li class="led"><strong>Fixo Azul:</strong> A interface Wi-Fi est&aacute; habilitada.</li><li class="led"><strong>Piscando Azul:</strong> A negocia&#231;&#227;o WPS est&#225; habilitada.</li><li class="led lastChild"><strong>Desligado:</strong> A interface Wi-Fi est&#225; desabilitada.</li></ul></li>
+											</ul>
+										</td>
+									</tr>  
+									<tr class="even">
+										<td><img src="/html/assets/_images/gateway_sophia/wifi-locked2_vivo.png" alt="REDE WI-FI"/><br>Wi-Fi 5 GHz</td>
+										<td>
+											<ul>
+												<li><strong><span id='MLG_LED_WIFI_CONTENT'></span></strong><ul><li class="led"><strong>Fixo Azul:</strong> A interface Wi-Fi est&aacute; habilitada.</li><li class="led"><strong>Piscando Azul:</strong> A negocia&#231;&#227;o WPS est&#225; habilitada.</li><li class="led lastChild"><strong>Desligado:</strong> A interface Wi-Fi est&#225; desabilitada.</li></ul></li>
+											</ul>
+										</td>
+									</tr>  
+									<tr class="odd">
+										<td><img src="/html/assets/_images/gateway_sophia/icon-internet_vivo.png" alt="Internet" /><br>Mouse</td>
+										<td>
+											<ul>
+												<li><strong><span id='MLG_LED_Internet_CONTENT'></span></strong><ul><li class="led"><strong>Fixo Azul:</strong> Vivo Box recebeu endere&#231;o de IP e pode navegar na Internet.</li><li class="led"><strong>Piscando Azul Rapidamente:</strong> Vivo Box est&#225; tentando autenticar e receber endere&#231;o IP.</li><li class="led"><strong>Piscando Azul Devagar:</strong> Vivo Box est&#225; com associa&#231;&#227;o GPON.</li><li class="led"><strong>Piscando Azul Rapidamente 3 vezes:</strong> Vivo Box n&#227;o est&#225; com associa&#231;&#227;o GPON.</li><li class="led"><strong>Fixo Vermelho:</strong> Vivo Box n&#227;o est&#225; com sess&#227;o PPP autenticada.</li><li class="led"><strong>Piscando Vermelho:</strong> O n&#237;vel do sinal &#243;ptico n&#227;o est&#225; na faixa recomendada.</li><li class="led lastChild"><strong>Desligado:</strong> Vivo Box est&#225; desligado.</li></ul></li>
+											</ul>
+										</td>
+									</tr>
+									<tr class="even">
+										<td>Casos Especiais</td>
+										<td>
+											<ul>
+												<li><strong><span id='MLG_LED_SPECIAL_CONTENT_ADSL'></span></strong><ul><li class="led"><strong>Reconfigura&#231;&#227;o:</strong> Todas as luzes piscam em azul ao mesmo tempo.</li><li class="led lastChild"><strong>Atualiza&#231;&#227;o de Firmware:</strong> As luzes piscam sequenciamente da esquerda para direita enquanto transfere o arquivo e tornam-se fixas em azul quando aplicando na mem&#243;ria.</li></ul></li>
+											</ul>
+										</td>
+									</tr>				
+				  				</tbody>
+
+							</table>
+		
+							<table class="gatewayTable right" cellpadding="0" cellspacing="0" style="width:690px;">
+								<thead>
+									<tr>
+										<th style="width:190px;"><span id='MLG_BUTTON_TITLE'>Bot&#227;o</span></th>
+										<th class="lastChild" style="width:590px;"><span id='MLG_BUTTON_DESCRIPTION_TITLE'>O que fazem os bot&#245;es?</span></th>
+									</tr>
+								</thead>
+								
+								<tbody>
+									<tr class="even">
+										<td><span id='MLG_BUTTON_WPS'>WPS</span></td>
+										<td class="lastChild"><span id='MLG_BUTTON_WPS_CONTENT'>Ao pressionar este bot&atilde;o, voc&ecirc; ir&aacute; habilitar por um breve instante a fun&ccedil;&atilde;o WPS. Isto permite que seus dispositivos Wi-Fi entrem na sua rede sem precisar digitar a senha.</span></td>
+									</tr> 
+									<tr class="odd">
+										<td><span id='MLG_BUTTON_Reset'>Reconfigurar</span></td>
+										<td class="lastChild"><span id='MLG_BUTTON_Reset_CONTENT'>Ao manter este bot&#227;o apertado, voc&#234; ir&#225; restaurar a configura&#231;&#227;o de original de f&#225;brica. Isto apaga toda personaliza&#231;&#227;o efetuada, incluindo nomes e senhas da rede Wi-Fi.</span></td>
+									</tr>
+									<tr class="even">
+										<td><span id='MLG_BUTTON_ON_OFF'>ON/OFF</span></td>
+										<td class="lastChild"><span id='MLG_BUTTON_ON_OFF_CONTENT'>Liga ou desliga o dispositivo.</span></td>
+									</tr> 					  
+								</tbody>				
+							</table>
+
+					
+		
+					<div class="clear"></div>
+			
+				</div><!--conteudo-->
+		
+				<div class="clear"></div>
+		
+			</div><!--wrap-->
+		
+
+	</body>
+</html>
