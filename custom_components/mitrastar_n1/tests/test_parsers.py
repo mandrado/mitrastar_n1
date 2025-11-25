@@ -15,7 +15,7 @@ def _load_parsers_module():
 
 def load_sample(name):
     here = pathlib.Path(__file__).parent
-    p = here / '..' / f'http_cgi-bin_{name}.htm'
+    p = here / 'fixtures' / f'http_cgi-bin_{name}.htm'
     return p.read_text(encoding='utf-8', errors='ignore')
 
 
