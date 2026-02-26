@@ -5,5 +5,5 @@
   "documentation": "https://github.com/mandrado/mitrastar_n1",
   "issue_tracker": "https://github.com/mandrado/mitrastar_n1/issues",
   "license": "MIT",
-  "notes": "Add these image files under home-assistant/brands/custom_integrations/mitrastar_n1/ as described in BRANDS_CHECKLIST.md"
+  "notes": "Brand images are shipped locally in custom_components/mitrastar_n1/brand/ as recommended by Home Assistant (2026.3+)."
 }

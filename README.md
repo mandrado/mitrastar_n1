@@ -27,6 +27,12 @@ Integração customizada para Home Assistant que monitora e exibe informações 
 - Endereço IP atribuído
 - Tempo de lease DHCP
 
+## Identidade visual (brand)
+
+Esta integração já inclui imagens de marca locais em
+`custom_components/mitrastar_n1/brand/` (`icon.png`, `icon@2x.png`, `logo.png`, `logo@2x.png`),
+seguindo o modelo novo do Home Assistant (2026.3+).
+
 ## Instalação
 
 ### Via HACS (recomendado)
